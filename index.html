@@ -9,21 +9,25 @@
 <body>
 
     <div class="container">
-        <h1>Daily Motivation</h1>
-
+        <div class="header-row">
+            <h1>Daily Motivation</h1>
+            <button id="themeToggle" class="theme-toggle">🌙</button>
+        </div>
+    
         <p id="quote" class="quote">Click the button for inspiration!</p>
         <p id="quoteMeta" class="meta">You’ve seen 0 of 0 quotes.</p>
-
+    
         <div class="buttons">
             <button id="newQuoteBtn">New Quote</button>
             <button id="favoriteBtn">❤️ Save to Favorites</button>
         </div>
-
+    
         <div class="favorites">
             <h2>Favorites</h2>
             <ul id="favoritesList"></ul>
         </div>
     </div>
+    
 
     <script src="script.js"></script>
 </body>

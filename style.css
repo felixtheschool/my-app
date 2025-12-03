@@ -110,3 +110,53 @@ button:hover {
     text-decoration: underline;
     padding: 0;
 }
+.container {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    width: 360px;
+    max-height: 90vh;
+    overflow-y: auto;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* header row */
+.header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.theme-toggle {
+    padding: 4px 8px;
+    font-size: 1.1rem;
+    background: transparent;
+    border: 1px solid #ccc;
+    border-radius: 999px;
+    cursor: pointer;
+}
+
+/* Dark mode */
+body.dark {
+    background: linear-gradient(135deg, #232526, #414345);
+    color: #f1f1f1;
+}
+
+body.dark .container {
+    background: #2c2c34;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+body.dark .meta {
+    color: #bbb;
+}
+
+body.dark .favorites h2 {
+    color: #f1f1f1;
+}
+
+body.dark button {
+    border-color: transparent;
+}
