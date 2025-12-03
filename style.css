@@ -13,7 +13,9 @@ body {
     background: white;
     padding: 30px;
     border-radius: 15px;
-    width: 320px;
+    width: 360px;
+    max-height: 90vh;
+    overflow-y: auto;
     text-align: center;
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
@@ -41,17 +43,70 @@ h1 {
     margin-bottom: 15px;
 }
 
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
 button {
-    margin-top: 10px;
-    padding: 10px 20px;
+    padding: 8px 14px;
     border: none;
     background: #66a6ff;
     color: white;
-    font-size: 16px;
+    font-size: 14px;
     cursor: pointer;
     border-radius: 8px;
 }
 
 button:hover {
     background: #4d8de6;
+}
+
+#favoriteBtn {
+    background: #ff6b81;
+}
+
+#favoriteBtn:hover {
+    background: #e5556b;
+}
+
+.favorites {
+    text-align: left;
+    margin-top: 10px;
+}
+
+.favorites h2 {
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+#favoritesList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.favorite-item {
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: center;
+}
+
+.favorite-text {
+    flex: 1;
+}
+
+.remove-fav {
+    border: none;
+    background: transparent;
+    font-size: 0.8rem;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
 }
