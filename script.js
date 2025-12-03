@@ -1,3 +1,5 @@
+const themeToggleBtn = document.getElementById("themeToggle");
+
 const quotes = [
     "You are capable of amazing things.",
     "Small steps every day lead to big results.",
@@ -5,6 +7,33 @@ const quotes = [
     "Dream it. Wish it. Do it.",
     "Success is not final; failure is not fatal."
 ];
+// ---- Theme / Dark mode ----
+function applyTheme(theme) {
+    if (theme === "dark") {
+        document.body.classList.add("dark");
+        themeToggleBtn.textContent = "☀️";
+    } else {
+        document.body.classList.remove("dark");
+        themeToggleBtn.textContent = "🌙";
+    }
+}
+
+function loadTheme() {
+    const stored = localStorage.getItem("theme");
+    if (stored === "dark" || stored === "light") {
+        applyTheme(stored);
+    } else {
+        // Default: light
+        applyTheme("light");
+    }
+}
+
+function toggleTheme() {
+    const isDark = document.body.classList.contains("dark");
+    const newTheme = isDark ? "light" : "dark";
+    applyTheme(newTheme);
+    localStorage.setItem("theme", newTheme);
+}
 
 const quoteEl = document.getElementById("quote");
 const metaEl = document.getElementById("quoteMeta");
@@ -167,6 +196,14 @@ favoritesListEl.addEventListener("click", (event) => {
 });
 
 // ---- Init ----
+themeToggleBtn.addEventListener("click", toggleTheme);
+
+loadTheme();
+loadFavorites();
+renderFavorites();
+updateMeta();
+showQuoteOfTheDay();
+
 newQuoteBtn.addEventListener("click", showNewQuote);
 favoriteBtn.addEventListener("click", addCurrentToFavorites);
 
