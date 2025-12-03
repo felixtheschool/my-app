@@ -13,13 +13,36 @@ body {
     background: white;
     padding: 30px;
     border-radius: 15px;
-    width: 300px;
+    width: 320px;
     text-align: center;
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
+h1 {
+    margin-top: 0;
+}
+
+.quote {
+    min-height: 80px;
+    font-size: 1.1rem;
+    line-height: 1.4;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.quote.fade-out {
+    opacity: 0;
+}
+
+.meta {
+    font-size: 0.8rem;
+    color: #777;
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+
 button {
-    margin-top: 20px;
+    margin-top: 10px;
     padding: 10px 20px;
     border: none;
     background: #66a6ff;
