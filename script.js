@@ -15,43 +15,85 @@ const favoritesListEl = document.getElementById("favoritesList");
 let lastIndex = null;
 const seenQuotes = new Set();
 let currentQuoteText = quoteEl.textContent;
-
 let favorites = [];
 
-// ---- Meta / Quotes ----
+// ---- Helpers ----
+function todayKey() {
+    const d = new Date();
+    // yyyy-mm-dd
+    return d.toISOString().slice(0, 10);
+}
+
 function updateMeta() {
     metaEl.textContent = `You’ve seen ${seenQuotes.size} of ${quotes.length} quotes.`;
 }
 
-function getRandomIndex() {
+function getRandomIndex(excludeIndex = null) {
     if (quotes.length === 1) return 0;
 
     let index;
     do {
         index = Math.floor(Math.random() * quotes.length);
-    } while (index === lastIndex);
+    } while (index === excludeIndex);
 
     return index;
 }
 
-function showNewQuote() {
-    const index = getRandomIndex();
+function setQuote(text, index = null) {
     lastIndex = index;
+
+    quoteEl.classList.add("fade-out");
+    setTimeout(() => {
+        quoteEl.textContent = text;
+        currentQuoteText = text;
+        quoteEl.classList.remove("fade-out");
+    }, 300);
+}
+
+// ---- Quote of the day ----
+function showQuoteOfTheDay() {
+    const key = todayKey();
+    const stored = localStorage.getItem("quoteOfTheDay");
+    if (stored) {
+        try {
+            const parsed = JSON.parse(stored);
+            if (parsed.date === key && typeof parsed.quote === "string") {
+                // Same day: reuse
+                setQuote(parsed.quote, parsed.index);
+                if (typeof parsed.index === "number") {
+                    seenQuotes.add(parsed.index);
+                }
+                updateMeta();
+                return;
+            }
+        } catch (e) {
+            // ignore parse error
+        }
+    }
+
+    // New day or missing: pick a new quote
+    const index = getRandomIndex();
+    const text = quotes[index];
+
+    setQuote(text, index);
+    seenQuotes.add(index);
+    updateMeta();
+
+    localStorage.setItem(
+        "quoteOfTheDay",
+        JSON.stringify({ date: key, quote: text, index })
+    );
+}
+
+// Button still shows a random new quote (not restricted to 1/day)
+function showNewQuote() {
+    const index = getRandomIndex(lastIndex);
+    const text = quotes[index];
 
     seenQuotes.add(index);
     updateMeta();
 
-    const newText = quotes[index];
-
-    quoteEl.classList.add("fade-out");
-    setTimeout(() => {
-        quoteEl.textContent = newText;
-        currentQuoteText = newText;
-        quoteEl.classList.remove("fade-out");
-    }, 300);
-
-    // Save last shown quote in localStorage (used in next stage too)
-    localStorage.setItem("lastQuote", newText);
+    setQuote(text, index);
 }
 
 // ---- Favorites ----
@@ -131,10 +173,4 @@ favoriteBtn.addEventListener("click", addCurrentToFavorites);
 loadFavorites();
 renderFavorites();
 updateMeta();
-
-// If we have a lastQuote saved, use it initially
-const lastQuote = localStorage.getItem("lastQuote");
-if (lastQuote) {
-    quoteEl.textContent = lastQuote;
-    currentQuoteText = lastQuote;
-}
+showQuoteOfTheDay();
