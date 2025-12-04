@@ -1,5 +1,3 @@
-const themeToggleBtn = document.getElementById("themeToggle");
-
 const quotes = [
     "You are capable of amazing things.",
     "Small steps every day lead to big results.",
@@ -7,6 +5,22 @@ const quotes = [
     "Dream it. Wish it. Do it.",
     "Success is not final; failure is not fatal."
 ];
+
+// Elements
+const quoteEl = document.getElementById("quote");
+const metaEl = document.getElementById("quoteMeta");
+const newQuoteBtn = document.getElementById("newQuoteBtn");
+const favoriteBtn = document.getElementById("favoriteBtn");
+const favoritesListEl = document.getElementById("favoritesList");
+const themeToggleBtn = document.getElementById("themeToggle");
+const shareBtn = document.getElementById("shareBtn");
+
+// State
+let lastIndex = null;
+const seenQuotes = new Set();
+let currentQuoteText = quoteEl.textContent;
+let favorites = [];
+
 // ---- Theme / Dark mode ----
 function applyTheme(theme) {
     if (theme === "dark") {
@@ -23,7 +37,6 @@ function loadTheme() {
     if (stored === "dark" || stored === "light") {
         applyTheme(stored);
     } else {
-        // Default: light
         applyTheme("light");
     }
 }
@@ -35,25 +48,10 @@ function toggleTheme() {
     localStorage.setItem("theme", newTheme);
 }
 
-//declaring constants refferencing html elements.
-const quoteEl = document.getElementById("quote");
-const metaEl = document.getElementById("quoteMeta");
-const newQuoteBtn = document.getElementById("newQuoteBtn");
-const favoriteBtn = document.getElementById("favoriteBtn");
-const favoritesListEl = document.getElementById("favoritesList");
-//share button
-const shareBtn = document.getElementById("shareBtn");
-
-let lastIndex = null;
-const seenQuotes = new Set();
-let currentQuoteText = quoteEl.textContent;
-let favorites = [];
-
 // ---- Helpers ----
 function todayKey() {
     const d = new Date();
-    // yyyy-mm-dd
-    return d.toISOString().slice(0, 10);
+    return d.toISOString().slice(0, 10); // yyyy-mm-dd
 }
 
 function updateMeta() {
@@ -90,7 +88,6 @@ function showQuoteOfTheDay() {
         try {
             const parsed = JSON.parse(stored);
             if (parsed.date === key && typeof parsed.quote === "string") {
-                // Same day: reuse
                 setQuote(parsed.quote, parsed.index);
                 if (typeof parsed.index === "number") {
                     seenQuotes.add(parsed.index);
@@ -103,7 +100,7 @@ function showQuoteOfTheDay() {
         }
     }
 
-    // New day or missing: pick a new quote
+    // New day or invalid stored data
     const index = getRandomIndex();
     const text = quotes[index];
 
@@ -117,7 +114,7 @@ function showQuoteOfTheDay() {
     );
 }
 
-// Button still shows a random new quote (not restricted to 1/day)
+// Button: random new quote (not limited to 1/day)
 function showNewQuote() {
     const index = getRandomIndex(lastIndex);
     const text = quotes[index];
@@ -198,20 +195,25 @@ favoritesListEl.addEventListener("click", (event) => {
     }
 });
 
-//share button functions
+// ---- Share ----
+//falback function for if the copy to clipboard fails
+function fallbackPromptShare() {
+    // Basic fallback: show the quote in a prompt the user can copy from
+    window.prompt("Copy this quote:", `"${currentQuoteText}"`);
+}
+//basic cop to clipboard function
 function shareQuote() {
-    console.log("sharing the quote");
-    //anding quote text with trimmed version so it will be empty if nothing there
+    //null if empty
     const text = currentQuoteText && currentQuoteText.trim();
-    //if text is null or has default fill, prompt to get a quote and exit the function
+    //catch if null or if default
     if (!text || text === "Click the button for inspiration!") {
         alert("Get a quote first, then share it!");
         return;
     }
-    //referencing text variable from currentquotetext var
-    const shareText = `"${text}" - via Daily Motivation`;
-    //modern browsers
+    //remove via daily motivation from text quote end.
+    const shareText = `"${text}" — via Daily Motivation`;
 
+    // Modern browsers (especially mobile) navigator api.
     if (navigator.share) {
         navigator
             .share({
@@ -220,33 +222,36 @@ function shareQuote() {
                 url: window.location.href
             })
             .catch(() => {
-
+                // user cancelled or share failed – silently ignore
             });
         return;
     }
+
+    // Clipboard API fallback, this seems to work with firefox.
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard
+            .writeText(shareText)
+            .then(() => {
+                alert("Quote copied to clipboard! You can paste it anywhere.");
+            })
+            .catch(() => {
+                fallbackPromptShare();
+            });
+        return;
+    }
+
+    // Old browsers - display the quote and get them to copy it manually......
+    fallbackPromptShare();
 }
 
-
-
-
-
-
-
-// ---- Init ---- event listeners and functions to execute on page load
-//////////////////////////////////////////////////////////////////
-
-themeToggleBtn.addEventListener("click", toggleTheme);
-
-loadTheme();
-loadFavorites();
-renderFavorites();
-updateMeta();
-showQuoteOfTheDay();
-
+// ---- Init ----
 newQuoteBtn.addEventListener("click", showNewQuote);
 favoriteBtn.addEventListener("click", addCurrentToFavorites);
-//share btn event listener triggering sharequote function
+themeToggleBtn.addEventListener("click", toggleTheme);
+//sharebtn
 shareBtn.addEventListener("click", shareQuote);
+
+loadTheme();
 loadFavorites();
 renderFavorites();
 updateMeta();
