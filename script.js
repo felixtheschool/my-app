@@ -35,11 +35,14 @@ function toggleTheme() {
     localStorage.setItem("theme", newTheme);
 }
 
+//declaring constants refferencing html elements.
 const quoteEl = document.getElementById("quote");
 const metaEl = document.getElementById("quoteMeta");
 const newQuoteBtn = document.getElementById("newQuoteBtn");
 const favoriteBtn = document.getElementById("favoriteBtn");
 const favoritesListEl = document.getElementById("favoritesList");
+//share button
+const shareBtn = document.getElementById("shareBtn");
 
 let lastIndex = null;
 const seenQuotes = new Set();
@@ -195,7 +198,43 @@ favoritesListEl.addEventListener("click", (event) => {
     }
 });
 
-// ---- Init ----
+//share button functions
+function shareQuote() {
+    console.log("sharing the quote");
+    //anding quote text with trimmed version so it will be empty if nothing there
+    const text = currentQuoteText && currentQuoteText.trim();
+    //if text is null or has default fill, prompt to get a quote and exit the function
+    if (!text || text === "Click the button for inspiration!") {
+        alert("Get a quote first, then share it!");
+        return;
+    }
+    //referencing text variable from currentquotetext var
+    const shareText = `"${text}" - via Daily Motivation`;
+    //modern browsers
+
+    if (navigator.share) {
+        navigator
+            .share({
+                title: "Daily Motivation",
+                text: shareText,
+                url: window.location.href
+            })
+            .catch(() => {
+
+            });
+        return;
+    }
+}
+
+
+
+
+
+
+
+// ---- Init ---- event listeners and functions to execute on page load
+//////////////////////////////////////////////////////////////////
+
 themeToggleBtn.addEventListener("click", toggleTheme);
 
 loadTheme();
@@ -206,7 +245,8 @@ showQuoteOfTheDay();
 
 newQuoteBtn.addEventListener("click", showNewQuote);
 favoriteBtn.addEventListener("click", addCurrentToFavorites);
-
+//share btn event listener triggering sharequote function
+shareBtn.addEventListener("click", shareQuote);
 loadFavorites();
 renderFavorites();
 updateMeta();
