@@ -1,9 +1,12 @@
 //import quotes from other files load.
 
 const quotes = quotesArray;
+const affirmations = affirmationsArray;
 
 // Elements
 const quoteEl = document.getElementById("quote");
+//affirmation el
+const affirmEl = document.getElementById("modal-affirmation-content");
 const metaEl = document.getElementById("quoteMeta");
 const newQuoteBtn = document.getElementById("newQuoteBtn");
 //affirmation constant
@@ -254,11 +257,12 @@ function shareQuote() {
     // Old browsers - display the quote and get them to copy it manually......
     fallbackPromptShare();
 }
+
+
+///////////////////////////////////////////////////////////
+///
 //affirmatin functions
-function getAffirmation() {
-    console.log("you are enough");
-    showAffirmationModal();
-}
+
 
 //affirmation modal
 //modal closer event listeners:
@@ -282,11 +286,54 @@ function showAffirmationModal() {
 }
 //close modal function
 function closeModal() {
+    affirmEl.innerHTML = '';
+    //fade out the quote
+    affirmEl.classList.add("fade-out");
+    //remove animate tag if it exists
+    affirmEl.classList.remove('animate');
         document.getElementById('affirmation-modal').style.display = 'none';
     }
 
+//get random index for affirmation selection from list
+function getRandomAffirmationsIndex(excludeIndex = null) {
+    if (affirmations.length === 1) return 0;
 
+    let index;
+    do {
+        index = Math.floor(Math.random() * affirmations.length);
+    } while (index === excludeIndex);
 
+    return index;
+}
+//set the next affirmation
+function setAffirmation(text, index = null) {
+    lastIndex = index;
+    
+    //add a delay before next quote appears
+    setTimeout(() => {
+        //set content to next quote
+        affirmEl.textContent = text;
+        currentAffirmationText = text;
+        //make visible
+        affirmEl.classList.remove("fade-out");
+        //trigger reflow to restart animation
+        void affirmEl.offsetWidth;
+        //add animate to class to add the animation back to the text
+        affirmEl.classList.add('animate');
+        
+    }, 300);   
+
+}
+//set new affirmation
+function showNewAffirmation() {
+    //get a random index from within the affirmation array that is not null
+    const index = getRandomAffirmationsIndex(lastIndex);
+    //get the afformation of the corresponding index
+    const text = affirmations[index]; 
+    //set the affirmation element;
+    setAffirmation(text, index);
+    showAffirmationModal();
+}
 // ---- Init ----
 newQuoteBtn.addEventListener("click", showNewQuote);
 favoriteBtn.addEventListener("click", addCurrentToFavorites);
@@ -294,7 +341,7 @@ themeToggleBtn.addEventListener("click", toggleTheme);
 //sharebtn
 shareBtn.addEventListener("click", shareQuote);
 //affirmation
-affirmationBtn.addEventListener("click", getAffirmation);
+affirmationBtn.addEventListener("click", showNewAffirmation);
 
 loadTheme();
 loadFavorites();

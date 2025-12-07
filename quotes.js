@@ -5,3 +5,8 @@ const quotesArray = [
     "Dream it. Wish it. Do it.",
     "Success is not final; failure is not fatal."
 ];
+
+const affirmationsArray = [
+    "I am enough",
+    "I will succeed"
+]

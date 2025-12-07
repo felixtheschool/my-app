@@ -204,9 +204,9 @@ body.dark button {
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     margin: 10% auto;
     padding: 10px;    
-    width: auto;
+    
     height: auto;
-    max-width: 60%;
+    
 }
 
 .close-modal {
@@ -215,4 +215,14 @@ body.dark button {
     font-size: 30px;
     font-weight: bold;
     cursor: pointer;
+}
+/* dark modal*/
+
+body.dark .modal {
+    background: linear-gradient(135deg, #232526, #414345);
+    color: #f1f1f1;
+}
+body.dark .modal .modal-content {
+    background: #2c2c34;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 }
