@@ -1,4 +1,4 @@
-/* General layout */
+/* Global layout */
 body {
     background: linear-gradient(135deg, #89f7fe, #66a6ff);
     font-family: Arial, sans-serif;
@@ -14,7 +14,7 @@ body {
     background: white;
     padding: 30px;
     border-radius: 15px;
-    width: 420px;
+    width: 440px;
     max-height: 95vh;
     overflow-y: auto;
     text-align: center;
@@ -63,7 +63,7 @@ h1 {
     opacity: 0;
 }
 
-/* Meta info */
+/* Meta text */
 .meta {
     font-size: 0.8rem;
     color: #777;
@@ -184,52 +184,40 @@ button:hover {
 /* Affirmations */
 .affirmations {
     text-align: left;
-    margin-top: 24px;
+    margin-top: 20px;
 }
 
 .affirmations h2 {
     font-size: 1rem;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
 }
 
-.affirmation-display {
+.affirmation-display-box {
+    margin-top: 8px;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    background: #fafafa;
+}
+
+.affirmation-text {
+    margin: 0;
     font-size: 0.95rem;
-    margin-bottom: 10px;
-    padding: 8px 10px;
-    border-radius: 8px;
-    background: #f5f5f5;
-    min-height: 50px;
+    line-height: 1.4;
 }
 
-.affirmation-display.fade-out {
-    opacity: 0;
-    transition: opacity 0.3s ease;
+.affirmation-buttons {
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
 }
 
-.affirmation-btn {
-    margin-bottom: 12px;
+#getAffirmationBtn {
     background: #ffb347;
 }
 
-.affirmation-btn:hover {
+#getAffirmationBtn:hover {
     background: #f39c12;
-}
-
-/* Affirmation form */
-.affirmation-form {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    margin-bottom: 10px;
-}
-
-#affirmationInput {
-    width: 100%;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    padding: 6px 8px;
-    font-size: 0.85rem;
-    resize: vertical;
 }
 
 /* Dark mode */
@@ -256,13 +244,11 @@ body.dark button {
     border-color: transparent;
 }
 
-body.dark #affirmationInput {
+body.dark .affirmation-display-box {
     background: #1f1f26;
-    color: #f1f1f1;
     border-color: #444;
 }
 
-body.dark .affirmation-display {
-    background: #1f1f26;
+body.dark .affirmation-text {
     color: #f1f1f1;
 }
