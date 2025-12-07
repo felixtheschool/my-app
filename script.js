@@ -313,16 +313,21 @@ function setAffirmation(text, index = null) {
     setTimeout(() => {
         //set content to next quote
         affirmEl.textContent = text;
-        currentAffirmationText = text;
+        
         //make visible
         affirmEl.classList.remove("fade-out");
-        //trigger reflow to restart animation
-        void affirmEl.offsetWidth;
-        //add animate to class to add the animation back to the text
-        affirmEl.classList.add('animate');
+       //trigger animation
+       affirmationAnimationStart();
         
     }, 300);   
 
+}
+//affirmation animations!!!
+function affirmationAnimationStart() {
+    //trigger reflow to restart animation
+    void affirmEl.offsetWidth;
+    //add animate to class to add the animation back to the text
+    affirmEl.classList.add('animate');
 }
 //set new affirmation
 function showNewAffirmation() {
@@ -330,9 +335,31 @@ function showNewAffirmation() {
     const index = getRandomAffirmationsIndex(lastIndex);
     //get the afformation of the corresponding index
     const text = affirmations[index]; 
+    
+   affirmationSplitAndSet(text);
     //set the affirmation element;
-    setAffirmation(text, index);
+    //belowcommented for testing
+    //setAffirmation(text, index);
     showAffirmationModal();
+}
+
+function affirmationSplitAndSet(text) {
+    //set innerhtml of the div to empty
+    affirmEl.innerHTML = '';
+    //split the string into an array of characters
+     const textArray = text.split('');
+     console.log(textArray);
+     //loop through the array, adding each char as a p element with an id to the content
+     for (const i in textArray) {
+        if (textArray[i] == ' ') {
+            affirmEl.innerHTML += `<p id=${i}>&nbsp;</p>`
+        } else {
+            affirmEl.innerHTML += `<p id=${i}>${textArray[i]}</p>`
+        }
+        
+     }
+     //start animation
+     affirmationAnimationStart();
 }
 // ---- Init ----
 newQuoteBtn.addEventListener("click", showNewQuote);
