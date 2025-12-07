@@ -62,12 +62,21 @@ const favoriteBtn = document.getElementById("favoriteBtn");
 const favoritesListEl = document.getElementById("favoritesList");
 const themeToggleBtn = document.getElementById("themeToggle");
 const shareBtn = document.getElementById("shareBtn");
+const typeFilterSelect = document.getElementById("typeFilter");
+
+const affirmationInput = document.getElementById("affirmationInput");
+const addAffirmationBtn = document.getElementById("addAffirmationBtn");
+const affirmationsListEl = document.getElementById("affirmationsList");
+
+const resetBtn = document.getElementById("resetBtn");
 
 // State
 let lastIndex = null;
 const seenQuotes = new Set();
 let currentQuote = null; // { text, author, category }
 let favorites = [];
+let affirmations = [];
+let currentFilter = "all"; // category filter
 
 // ---- Theme / Dark mode ----
 function applyTheme(theme) {
@@ -106,18 +115,37 @@ function updateMeta() {
     metaEl.textContent = `You’ve seen ${seenQuotes.size} of ${quotes.length} quotes.`;
 }
 
+function getFilteredIndices() {
+    if (currentFilter === "all") {
+        return quotes.map((_, idx) => idx);
+    }
+    return quotes
+        .map((q, idx) => ({ q, idx }))
+        .filter(item => item.q.category === currentFilter)
+        .map(item => item.idx);
+}
+
 function getRandomIndex(excludeIndex = null) {
-    if (quotes.length === 1) return 0;
+    const candidates = getFilteredIndices();
+    if (candidates.length === 0) {
+        return null;
+    }
+    if (candidates.length === 1) {
+        return candidates[0];
+    }
 
     let index;
     do {
-        index = Math.floor(Math.random() * quotes.length);
+        const randomPos = Math.floor(Math.random() * candidates.length);
+        index = candidates[randomPos];
     } while (index === excludeIndex);
 
     return index;
 }
 
 function setQuoteByIndex(index) {
+    if (index === null || index === undefined || !quotes[index]) return;
+
     const quoteObj = quotes[index];
     currentQuote = quoteObj;
     lastIndex = index;
@@ -142,8 +170,8 @@ function showQuoteOfTheDay() {
                 const index = parsed.index;
                 if (quotes[index]) {
                     seenQuotes.add(index);
-                    setQuoteByIndex(index);
                     updateMeta();
+                    setQuoteByIndex(index);
                     return;
                 }
             }
@@ -153,7 +181,11 @@ function showQuoteOfTheDay() {
     }
 
     // New day or invalid stored data
-    const index = getRandomIndex();
+    // For QOTD, ignore filters and pick from ALL
+    const allIndices = quotes.map((_, idx) => idx);
+    const randomPos = Math.floor(Math.random() * allIndices.length);
+    const index = allIndices[randomPos];
+
     seenQuotes.add(index);
     updateMeta();
     setQuoteByIndex(index);
@@ -164,9 +196,15 @@ function showQuoteOfTheDay() {
     );
 }
 
-// Button: random new quote (not limited to 1/day)
+// Button: random new quote (respects current filter)
 function showNewQuote() {
     const index = getRandomIndex(lastIndex);
+
+    if (index === null) {
+        alert("No quotes found for this type. Try another filter.");
+        return;
+    }
+
     seenQuotes.add(index);
     updateMeta();
     setQuoteByIndex(index);
@@ -206,7 +244,7 @@ function renderFavorites() {
 
         const span = document.createElement("span");
         span.className = "favorite-text";
-        span.textContent = fav; // already includes author
+        span.textContent = fav; // "text" — author
 
         const removeBtn = document.createElement("button");
         removeBtn.className = "remove-fav";
@@ -222,7 +260,7 @@ function renderFavorites() {
 function addCurrentToFavorites() {
     if (!currentQuote) return;
 
-    const favString = `"${currentQuote.text}" — ${currentQuote.author}`;
+    const favString = `"${currentQuote.text}" — ${currentQuote.author} [${currentQuote.category}]`;
     if (favorites.includes(favString)) {
         alert("This quote is already in your favorites.");
         return;
@@ -288,14 +326,150 @@ function shareQuote() {
     fallbackPromptShare();
 }
 
+// ---- Type filter (search by category) ----
+function initTypeFilter() {
+    const categories = Array.from(
+        new Set(quotes.map(q => q.category))
+    ).sort();
+
+    categories.forEach(cat => {
+        const opt = document.createElement("option");
+        opt.value = cat;
+        opt.textContent = cat[0].toUpperCase() + cat.slice(1);
+        typeFilterSelect.appendChild(opt);
+    });
+
+    typeFilterSelect.addEventListener("change", () => {
+        currentFilter = typeFilterSelect.value;
+        // When filter changes, grab a new quote for that type
+        showNewQuote();
+    });
+}
+
+// ---- Affirmations ----
+function loadAffirmations() {
+    const stored = localStorage.getItem("affirmations");
+    if (stored) {
+        try {
+            affirmations = JSON.parse(stored);
+        } catch (e) {
+            affirmations = [];
+        }
+    }
+}
+
+function saveAffirmations() {
+    localStorage.setItem("affirmations", JSON.stringify(affirmations));
+}
+
+function renderAffirmations() {
+    affirmationsListEl.innerHTML = "";
+
+    if (affirmations.length === 0) {
+        const li = document.createElement("li");
+        li.textContent = "No affirmations yet. Write one above!";
+        li.style.fontSize = "0.8rem";
+        li.style.color = "#777";
+        affirmationsListEl.appendChild(li);
+        return;
+    }
+
+    affirmations.forEach((text, index) => {
+        const li = document.createElement("li");
+        li.className = "affirmation-item";
+
+        const span = document.createElement("span");
+        span.className = "affirmation-text";
+        span.textContent = text;
+
+        const removeBtn = document.createElement("button");
+        removeBtn.className = "remove-affirmation";
+        removeBtn.textContent = "remove";
+        removeBtn.dataset.index = index;
+
+        li.appendChild(span);
+        li.appendChild(removeBtn);
+        affirmationsListEl.appendChild(li);
+    });
+}
+
+function addAffirmation() {
+    const text = affirmationInput.value.trim();
+    if (!text) return;
+
+    affirmations.push(text);
+    saveAffirmations();
+    renderAffirmations();
+    affirmationInput.value = "";
+}
+
+affirmationsListEl.addEventListener("click", (event) => {
+    if (event.target.classList.contains("remove-affirmation")) {
+        const index = Number(event.target.dataset.index);
+        affirmations.splice(index, 1);
+        saveAffirmations();
+        renderAffirmations();
+    }
+});
+
+function resetApp() {
+    const confirmed = window.confirm(
+        "This will clear your favorites, affirmations, theme, filters, and quote history. Continue?"
+    );
+    if (!confirmed) return;
+
+    // Clear localStorage data used by the app
+    localStorage.removeItem("favoriteQuotes");
+    localStorage.removeItem("affirmations");
+    localStorage.removeItem("quoteOfTheDay");
+    localStorage.removeItem("theme");
+    localStorage.removeItem("lastQuote"); // just in case from older versions
+
+    // Reset in-memory state
+    favorites = [];
+    affirmations = [];
+    seenQuotes.clear();
+    currentQuote = null;
+
+    // Reset filter
+    currentFilter = "all";
+    if (typeFilterSelect) {
+        typeFilterSelect.value = "all";
+    }
+
+    // Reset theme to light
+    applyTheme("light");
+
+    // Re-render lists
+    renderFavorites();
+    renderAffirmations();
+
+    // Reset quote display
+    quoteEl.textContent = "Click the button for inspiration!";
+    quoteAuthorEl.textContent = "— Author";
+    quoteCategoryEl.textContent = "Type: —";
+
+    // Update meta text
+    updateMeta();
+}
+
 // ---- Init ----
 newQuoteBtn.addEventListener("click", showNewQuote);
 favoriteBtn.addEventListener("click", addCurrentToFavorites);
 themeToggleBtn.addEventListener("click", toggleTheme);
 shareBtn.addEventListener("click", shareQuote);
+addAffirmationBtn.addEventListener("click", addAffirmation);
+
+resetBtn.addEventListener("click", resetApp);
 
 loadTheme();
+initTypeFilter();
+
 loadFavorites();
 renderFavorites();
+
+loadAffirmations();
+renderAffirmations();
+
 updateMeta();
 showQuoteOfTheDay();

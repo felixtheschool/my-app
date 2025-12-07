@@ -17,17 +17,42 @@
         <p id="quote" class="quote">Click the button for inspiration!</p>
         <p id="quoteAuthor" class="meta author">— Author</p>
         <p id="quoteCategory" class="meta category">Type: —</p>
+
+        <div class="filter-row">
+            <label for="typeFilter" class="meta">Filter by type:</label>
+            <select id="typeFilter">
+                <option value="all">All types</option>
+                <!-- JS will add more options dynamically -->
+            </select>
+        </div>
+
         <p id="quoteMeta" class="meta">You’ve seen 0 of 0 quotes.</p>
 
         <div class="buttons">
             <button id="newQuoteBtn">New Quote</button>
             <button id="favoriteBtn">❤️ Save to Favorites</button>
             <button id="shareBtn">📤 Share</button>
+            <button id="resetBtn">Reset All</button>
         </div>
+        
+        
 
         <div class="favorites">
-            <h2>Favorites</h2>
+            <h2>Favorite Quotes</h2>
             <ul id="favoritesList"></ul>
+        </div>
+
+        <div class="affirmations">
+            <h2>Your Affirmations</h2>
+            <div class="affirmation-form">
+                <textarea
+                    id="affirmationInput"
+                    placeholder="Write your affirmation and click 'Add'..."
+                    rows="3"
+                ></textarea>
+                <button id="addAffirmationBtn">+ Add Affirmation</button>
+            </div>
+            <ul id="affirmationsList"></ul>
         </div>
     </div>
 
