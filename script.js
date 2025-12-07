@@ -1,4 +1,6 @@
-// Stoic quotes with text, author, and category
+/***********************
+ * STOIC QUOTES DATA
+ ***********************/
 const quotes = [
     { id: 1, text: "You have power over your mind — not outside events. Realize this, and you will find strength.", author: "Marcus Aurelius", category: "control" },
     { id: 2, text: "We suffer more often in imagination than in reality.", author: "Seneca", category: "mind" },
@@ -52,33 +54,98 @@ const quotes = [
     { id: 50, text: "Do every act of your life as though it were the very last.", author: "Marcus Aurelius", category: "time" }
 ];
 
-// Elements
+/***********************
+ * AFFIRMATIONS DATA (50)
+ ***********************/
+const builtInAffirmations = [
+    "I am capable of learning any skill I commit to.",
+    "I choose progress over perfection today.",
+    "I am calm, focused, and in control of my actions.",
+    "I deserve to take up space and share my ideas.",
+    "Challenges are opportunities for me to grow stronger.",
+    "I am patient with myself as I learn.",
+    "My mind is clear, sharp, and creative.",
+    "I trust myself to make good decisions.",
+    "I am proud of how far I’ve come.",
+    "I am allowed to start small and still be proud.",
+    "Every day I am becoming a better version of myself.",
+    "I can handle whatever today brings.",
+    "I speak kindly to myself, always.",
+    "I am resilient, resourceful, and determined.",
+    "I am worthy of rest and recovery.",
+    "I am not behind; I am on my own perfect schedule.",
+    "I attract positive opportunities and people.",
+    "I am building a life I am excited to wake up to.",
+    "I choose to see obstacles as lessons.",
+    "I am strong enough to let go of what I cannot control.",
+    "My efforts today are investments in my future.",
+    "I am confident in my ability to solve problems.",
+    "I am grateful for the small wins along the way.",
+    "I am capable of deep focus when I need it.",
+    "My mistakes do not define me; they refine me.",
+    "I show up even when it feels hard.",
+    "I am learning to trust the process.",
+    "I am more powerful than my doubts.",
+    "I release the need to compare myself to others.",
+    "I am becoming more disciplined every day.",
+    "I am allowed to take breaks without guilt.",
+    "I am worthy of success and happiness.",
+    "I can figure things out step by step.",
+    "I choose thoughts that support my growth.",
+    "I am grounded, centered, and present.",
+    "I am capable of finishing what I start.",
+    "I am learning to be comfortable outside my comfort zone.",
+    "I am worthy of the goals I dream about.",
+    "I believe in my ability to adapt and improve.",
+    "I choose courage instead of fear.",
+    "I honor my limits and listen to my body.",
+    "I am building habits that support my best self.",
+    "I am patient with my timeline and persistent with my effort.",
+    "I am grateful for the chance to try again today.",
+    "I am enough exactly as I am, and I am still growing.",
+    "I can take things one step, one task, one moment at a time.",
+    "I am in charge of how I respond to challenges.",
+    "I release perfection and embrace progress.",
+    "I am moving closer to my goals every single day.",
+    "I respect myself, my time, and my energy."
+];
+
+/***********************
+ * DOM ELEMENTS
+ ***********************/
 const quoteEl = document.getElementById("quote");
 const quoteAuthorEl = document.getElementById("quoteAuthor");
 const quoteCategoryEl = document.getElementById("quoteCategory");
 const metaEl = document.getElementById("quoteMeta");
+
 const newQuoteBtn = document.getElementById("newQuoteBtn");
 const favoriteBtn = document.getElementById("favoriteBtn");
 const favoritesListEl = document.getElementById("favoritesList");
 const themeToggleBtn = document.getElementById("themeToggle");
 const shareBtn = document.getElementById("shareBtn");
+const resetBtn = document.getElementById("resetBtn");
 const typeFilterSelect = document.getElementById("typeFilter");
 
+const affirmationDisplayEl = document.getElementById("affirmationDisplay");
+const getAffirmationBtn = document.getElementById("getAffirmationBtn");
 const affirmationInput = document.getElementById("affirmationInput");
-const addAffirmationBtn = document.getElementById("addAffirmationBtn");
-const affirmationsListEl = document.getElementById("affirmationsList");
+const saveAffirmationBtn = document.getElementById("saveAffirmationBtn");
 
-const resetBtn = document.getElementById("resetBtn");
-
-// State
-let lastIndex = null;
+/***********************
+ * STATE
+ ***********************/
+let lastQuoteIndex = null;
 const seenQuotes = new Set();
-let currentQuote = null; // { text, author, category }
+let currentQuote = null;
 let favorites = [];
-let affirmations = [];
-let currentFilter = "all"; // category filter
 
-// ---- Theme / Dark mode ----
+let userAffirmations = [];
+let lastAffirmationIndex = null;
+let currentFilter = "all";
+
+/***********************
+ * THEME (DARK/LIGHT)
+ ***********************/
 function applyTheme(theme) {
     if (theme === "dark") {
         document.body.classList.add("dark");
@@ -105,17 +172,19 @@ function toggleTheme() {
     localStorage.setItem("theme", newTheme);
 }
 
-// ---- Helpers ----
+/***********************
+ * UTILITIES
+ ***********************/
 function todayKey() {
     const d = new Date();
-    return d.toISOString().slice(0, 10); // yyyy-mm-dd
+    return d.toISOString().slice(0, 10);
 }
 
 function updateMeta() {
     metaEl.textContent = `You’ve seen ${seenQuotes.size} of ${quotes.length} quotes.`;
 }
 
-function getFilteredIndices() {
+function getFilteredQuoteIndices() {
     if (currentFilter === "all") {
         return quotes.map((_, idx) => idx);
     }
@@ -125,30 +194,28 @@ function getFilteredIndices() {
         .map(item => item.idx);
 }
 
-function getRandomIndex(excludeIndex = null) {
-    const candidates = getFilteredIndices();
-    if (candidates.length === 0) {
-        return null;
-    }
-    if (candidates.length === 1) {
-        return candidates[0];
-    }
+function getRandomIndexFromList(list, excludeIndex = null) {
+    if (list.length === 0) return null;
+    if (list.length === 1) return list[0];
 
     let index;
     do {
-        const randomPos = Math.floor(Math.random() * candidates.length);
-        index = candidates[randomPos];
+        const pos = Math.floor(Math.random() * list.length);
+        index = list[pos];
     } while (index === excludeIndex);
 
     return index;
 }
 
+/***********************
+ * QUOTE LOGIC
+ ***********************/
 function setQuoteByIndex(index) {
     if (index === null || index === undefined || !quotes[index]) return;
 
     const quoteObj = quotes[index];
     currentQuote = quoteObj;
-    lastIndex = index;
+    lastQuoteIndex = index;
 
     quoteEl.classList.add("fade-out");
     setTimeout(() => {
@@ -159,33 +226,28 @@ function setQuoteByIndex(index) {
     }, 300);
 }
 
-// ---- Quote of the day ----
 function showQuoteOfTheDay() {
     const key = todayKey();
     const stored = localStorage.getItem("quoteOfTheDay");
+
     if (stored) {
         try {
             const parsed = JSON.parse(stored);
             if (parsed.date === key && typeof parsed.index === "number") {
-                const index = parsed.index;
-                if (quotes[index]) {
-                    seenQuotes.add(index);
+                if (quotes[parsed.index]) {
+                    seenQuotes.add(parsed.index);
                     updateMeta();
-                    setQuoteByIndex(index);
+                    setQuoteByIndex(parsed.index);
                     return;
                 }
             }
         } catch (e) {
-            // ignore parse error
+            // ignore parse errors
         }
     }
 
-    // New day or invalid stored data
-    // For QOTD, ignore filters and pick from ALL
     const allIndices = quotes.map((_, idx) => idx);
-    const randomPos = Math.floor(Math.random() * allIndices.length);
-    const index = allIndices[randomPos];
-
+    const index = getRandomIndexFromList(allIndices, null);
     seenQuotes.add(index);
     updateMeta();
     setQuoteByIndex(index);
@@ -196,9 +258,9 @@ function showQuoteOfTheDay() {
     );
 }
 
-// Button: random new quote (respects current filter)
 function showNewQuote() {
-    const index = getRandomIndex(lastIndex);
+    const candidates = getFilteredQuoteIndices();
+    const index = getRandomIndexFromList(candidates, lastQuoteIndex);
 
     if (index === null) {
         alert("No quotes found for this type. Try another filter.");
@@ -210,13 +272,15 @@ function showNewQuote() {
     setQuoteByIndex(index);
 }
 
-// ---- Favorites ----
+/***********************
+ * FAVORITES
+ ***********************/
 function loadFavorites() {
     const stored = localStorage.getItem("favoriteQuotes");
     if (stored) {
         try {
             favorites = JSON.parse(stored);
-        } catch (e) {
+        } catch {
             favorites = [];
         }
     }
@@ -244,7 +308,7 @@ function renderFavorites() {
 
         const span = document.createElement("span");
         span.className = "favorite-text";
-        span.textContent = fav; // "text" — author
+        span.textContent = fav;
 
         const removeBtn = document.createElement("button");
         removeBtn.className = "remove-fav";
@@ -280,7 +344,9 @@ favoritesListEl.addEventListener("click", (event) => {
     }
 });
 
-// ---- Share ----
+/***********************
+ * SHARE
+ ***********************/
 function fallbackPromptShare() {
     if (!currentQuote) return;
     const shareText = `"${currentQuote.text}" — ${currentQuote.author}`;
@@ -295,21 +361,17 @@ function shareQuote() {
 
     const shareText = `"${currentQuote.text}" — ${currentQuote.author} (type: ${currentQuote.category})`;
 
-    // Modern browsers (especially mobile)
     if (navigator.share) {
         navigator
             .share({
-                title: "Daily Stoic Motivation",
+                title: "Stoic Motivation",
                 text: shareText,
                 url: window.location.href
             })
-            .catch(() => {
-                // user cancelled or share failed – silently ignore
-            });
+            .catch(() => {});
         return;
     }
 
-    // Clipboard API fallback
     if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard
             .writeText(shareText)
@@ -322,11 +384,12 @@ function shareQuote() {
         return;
     }
 
-    // Old browsers
     fallbackPromptShare();
 }
 
-// ---- Type filter (search by category) ----
+/***********************
+ * TYPE FILTER
+ ***********************/
 function initTypeFilter() {
     const categories = Array.from(
         new Set(quotes.map(q => q.category))
@@ -341,126 +404,109 @@ function initTypeFilter() {
 
     typeFilterSelect.addEventListener("change", () => {
         currentFilter = typeFilterSelect.value;
-        // When filter changes, grab a new quote for that type
         showNewQuote();
     });
 }
 
-// ---- Affirmations ----
-function loadAffirmations() {
-    const stored = localStorage.getItem("affirmations");
+/***********************
+ * AFFIRMATIONS
+ ***********************/
+function loadUserAffirmations() {
+    const stored = localStorage.getItem("userAffirmations");
     if (stored) {
         try {
-            affirmations = JSON.parse(stored);
-        } catch (e) {
-            affirmations = [];
+            userAffirmations = JSON.parse(stored);
+        } catch {
+            userAffirmations = [];
         }
     }
 }
 
-function saveAffirmations() {
-    localStorage.setItem("affirmations", JSON.stringify(affirmations));
+function saveUserAffirmations() {
+    localStorage.setItem("userAffirmations", JSON.stringify(userAffirmations));
 }
 
-function renderAffirmations() {
-    affirmationsListEl.innerHTML = "";
+function getAllAffirmations() {
+    // built-in + user-created
+    return builtInAffirmations.concat(userAffirmations);
+}
 
-    if (affirmations.length === 0) {
-        const li = document.createElement("li");
-        li.textContent = "No affirmations yet. Write one above!";
-        li.style.fontSize = "0.8rem";
-        li.style.color = "#777";
-        affirmationsListEl.appendChild(li);
+function showRandomAffirmation() {
+    const all = getAllAffirmations();
+    if (all.length === 0) {
+        affirmationDisplayEl.textContent = "No affirmations available yet.";
         return;
     }
 
-    affirmations.forEach((text, index) => {
-        const li = document.createElement("li");
-        li.className = "affirmation-item";
+    const indices = all.map((_, idx) => idx);
+    const index = getRandomIndexFromList(indices, lastAffirmationIndex);
+    lastAffirmationIndex = index;
 
-        const span = document.createElement("span");
-        span.className = "affirmation-text";
-        span.textContent = text;
+    const text = all[index];
 
-        const removeBtn = document.createElement("button");
-        removeBtn.className = "remove-affirmation";
-        removeBtn.textContent = "remove";
-        removeBtn.dataset.index = index;
-
-        li.appendChild(span);
-        li.appendChild(removeBtn);
-        affirmationsListEl.appendChild(li);
-    });
+    affirmationDisplayEl.classList.add("fade-out");
+    setTimeout(() => {
+        affirmationDisplayEl.textContent = text;
+        affirmationDisplayEl.classList.remove("fade-out");
+    }, 300);
 }
 
-function addAffirmation() {
+function saveNewAffirmation() {
     const text = affirmationInput.value.trim();
     if (!text) return;
 
-    affirmations.push(text);
-    saveAffirmations();
-    renderAffirmations();
+    userAffirmations.push(text);
+    saveUserAffirmations();
     affirmationInput.value = "";
+    alert("Your affirmation has been saved and will appear in the pool.");
 }
 
-affirmationsListEl.addEventListener("click", (event) => {
-    if (event.target.classList.contains("remove-affirmation")) {
-        const index = Number(event.target.dataset.index);
-        affirmations.splice(index, 1);
-        saveAffirmations();
-        renderAffirmations();
-    }
-});
-
+/***********************
+ * RESET
+ ***********************/
 function resetApp() {
     const confirmed = window.confirm(
-        "This will clear your favorites, affirmations, theme, filters, and quote history. Continue?"
+        "This will clear your favorites, affirmations, quote of the day, theme, and filters. Continue?"
     );
     if (!confirmed) return;
 
-    // Clear localStorage data used by the app
     localStorage.removeItem("favoriteQuotes");
-    localStorage.removeItem("affirmations");
+    localStorage.removeItem("userAffirmations");
     localStorage.removeItem("quoteOfTheDay");
     localStorage.removeItem("theme");
-    localStorage.removeItem("lastQuote"); // just in case from older versions
 
-    // Reset in-memory state
     favorites = [];
-    affirmations = [];
+    userAffirmations = [];
     seenQuotes.clear();
     currentQuote = null;
+    lastQuoteIndex = null;
+    lastAffirmationIndex = null;
 
-    // Reset filter
     currentFilter = "all";
-    if (typeFilterSelect) {
-        typeFilterSelect.value = "all";
-    }
+    typeFilterSelect.value = "all";
 
-    // Reset theme to light
     applyTheme("light");
-
-    // Re-render lists
     renderFavorites();
-    renderAffirmations();
 
-    // Reset quote display
-    quoteEl.textContent = "Click the button for inspiration!";
+    quoteEl.textContent = "Click “New Quote” for inspiration.";
     quoteAuthorEl.textContent = "— Author";
     quoteCategoryEl.textContent = "Type: —";
+    affirmationDisplayEl.textContent = "Click “Get Affirmation” to see one.";
 
-    // Update meta text
     updateMeta();
 }
 
-// ---- Init ----
+/***********************
+ * EVENT LISTENERS & INIT
+ ***********************/
 newQuoteBtn.addEventListener("click", showNewQuote);
 favoriteBtn.addEventListener("click", addCurrentToFavorites);
 themeToggleBtn.addEventListener("click", toggleTheme);
 shareBtn.addEventListener("click", shareQuote);
-addAffirmationBtn.addEventListener("click", addAffirmation);
-
 resetBtn.addEventListener("click", resetApp);
+
+getAffirmationBtn.addEventListener("click", showRandomAffirmation);
+saveAffirmationBtn.addEventListener("click", saveNewAffirmation);
 
 loadTheme();
 initTypeFilter();
@@ -468,8 +514,6 @@ initTypeFilter();
 loadFavorites();
 renderFavorites();
 
-loadAffirmations();
-renderAffirmations();
-
+loadUserAffirmations();
 updateMeta();
 showQuoteOfTheDay();

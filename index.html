@@ -3,56 +3,69 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Daily Stoic Motivation</title>
+    <title>Stoic Motivation & Affirmations</title>
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
     <div class="container">
+        <!-- Header -->
         <div class="header-row">
-            <h1>Daily Stoic Motivation</h1>
+            <h1>Stoic Motivation & Affirmations</h1>
             <button id="themeToggle" class="theme-toggle">🌙</button>
         </div>
 
-        <p id="quote" class="quote">Click the button for inspiration!</p>
+        <!-- Quote display -->
+        <p id="quote" class="quote">Click “New Quote” for inspiration.</p>
         <p id="quoteAuthor" class="meta author">— Author</p>
         <p id="quoteCategory" class="meta category">Type: —</p>
 
+        <!-- Filter -->
         <div class="filter-row">
             <label for="typeFilter" class="meta">Filter by type:</label>
             <select id="typeFilter">
                 <option value="all">All types</option>
-                <!-- JS will add more options dynamically -->
+                <!-- JS will add more options -->
             </select>
         </div>
 
         <p id="quoteMeta" class="meta">You’ve seen 0 of 0 quotes.</p>
 
+        <!-- Quote buttons -->
         <div class="buttons">
             <button id="newQuoteBtn">New Quote</button>
             <button id="favoriteBtn">❤️ Save to Favorites</button>
             <button id="shareBtn">📤 Share</button>
             <button id="resetBtn">Reset All</button>
         </div>
-        
-        
 
+        <!-- Favorites -->
         <div class="favorites">
             <h2>Favorite Quotes</h2>
             <ul id="favoritesList"></ul>
         </div>
 
+        <!-- Affirmations -->
         <div class="affirmations">
-            <h2>Your Affirmations</h2>
+            <h2>Affirmations</h2>
+
+            <!-- Display area: shows ONE affirmation at a time -->
+            <p id="affirmationDisplay" class="affirmation-display">
+                Click “Get Affirmation” to see one.
+            </p>
+
+            <button id="getAffirmationBtn" class="affirmation-btn">
+                Get Affirmation
+            </button>
+
             <div class="affirmation-form">
                 <textarea
                     id="affirmationInput"
-                    placeholder="Write your affirmation and click 'Add'..."
+                    placeholder="Write your own affirmation to add to the pool..."
                     rows="3"
                 ></textarea>
-                <button id="addAffirmationBtn">+ Add Affirmation</button>
+                <button id="saveAffirmationBtn">Save My Affirmation</button>
             </div>
-            <ul id="affirmationsList"></ul>
         </div>
     </div>
 

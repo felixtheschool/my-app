@@ -1,3 +1,4 @@
+/* General layout */
 body {
     background: linear-gradient(135deg, #89f7fe, #66a6ff);
     font-family: Arial, sans-serif;
@@ -20,12 +21,17 @@ body {
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
-/* header row */
+/* Header */
 .header-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 10px;
+}
+
+h1 {
+    margin-top: 0;
+    font-size: 1.3rem;
 }
 
 .theme-toggle {
@@ -37,12 +43,7 @@ body {
     cursor: pointer;
 }
 
-h1 {
-    margin-top: 0;
-    font-size: 1.3rem;
-}
-
-/* gradient quote text */
+/* Gradient quote text */
 .quote {
     min-height: 80px;
     font-size: 1.1rem;
@@ -62,6 +63,7 @@ h1 {
     opacity: 0;
 }
 
+/* Meta info */
 .meta {
     font-size: 0.8rem;
     color: #777;
@@ -73,11 +75,10 @@ h1 {
 }
 
 .category {
-    font-size: 0.8rem;
     text-transform: capitalize;
 }
 
-/* filter row */
+/* Filter row */
 .filter-row {
     display: flex;
     align-items: center;
@@ -94,6 +95,7 @@ h1 {
     border: 1px solid #ccc;
 }
 
+/* Buttons */
 .buttons {
     display: flex;
     justify-content: center;
@@ -131,6 +133,7 @@ button:hover {
 #shareBtn:hover {
     background: #3d8b40;
 }
+
 #resetBtn {
     background: #888;
 }
@@ -139,28 +142,24 @@ button:hover {
     background: #666;
 }
 
-
-.favorites,
-.affirmations {
+/* Favorites */
+.favorites {
     text-align: left;
     margin-top: 16px;
 }
 
-.favorites h2,
-.affirmations h2 {
+.favorites h2 {
     font-size: 1rem;
     margin-bottom: 8px;
 }
 
-#favoritesList,
-#affirmationsList {
+#favoritesList {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-.favorite-item,
-.affirmation-item {
+.favorite-item {
     font-size: 0.85rem;
     margin-bottom: 8px;
     display: flex;
@@ -169,13 +168,11 @@ button:hover {
     align-items: center;
 }
 
-.favorite-text,
-.affirmation-text {
+.favorite-text {
     flex: 1;
 }
 
-.remove-fav,
-.remove-affirmation {
+.remove-fav {
     border: none;
     background: transparent;
     font-size: 0.8rem;
@@ -184,7 +181,41 @@ button:hover {
     padding: 0;
 }
 
-/* affirmation form */
+/* Affirmations */
+.affirmations {
+    text-align: left;
+    margin-top: 24px;
+}
+
+.affirmations h2 {
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+.affirmation-display {
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: #f5f5f5;
+    min-height: 50px;
+}
+
+.affirmation-display.fade-out {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.affirmation-btn {
+    margin-bottom: 12px;
+    background: #ffb347;
+}
+
+.affirmation-btn:hover {
+    background: #f39c12;
+}
+
+/* Affirmation form */
 .affirmation-form {
     display: flex;
     flex-direction: column;
@@ -199,15 +230,6 @@ button:hover {
     padding: 6px 8px;
     font-size: 0.85rem;
     resize: vertical;
-}
-
-#addAffirmationBtn {
-    align-self: flex-end;
-    background: #ffb347;
-}
-
-#addAffirmationBtn:hover {
-    background: #f39c12;
 }
 
 /* Dark mode */
@@ -238,4 +260,9 @@ body.dark #affirmationInput {
     background: #1f1f26;
     color: #f1f1f1;
     border-color: #444;
+}
+
+body.dark .affirmation-display {
+    background: #1f1f26;
+    color: #f1f1f1;
 }
