@@ -1,10 +1,6 @@
-const quotes = [
-    "You are capable of amazing things.",
-    "Small steps every day lead to big results.",
-    "Believe you can and you're halfway there.",
-    "Dream it. Wish it. Do it.",
-    "Success is not final; failure is not fatal."
-];
+//import quotes from other files load.
+
+const quotes = quotesArray;
 
 // Elements
 const quoteEl = document.getElementById("quote");
@@ -31,7 +27,7 @@ function applyTheme(theme) {
         themeToggleBtn.textContent = "🌙";
     }
 }
-
+// load stored theme
 function loadTheme() {
     const stored = localStorage.getItem("theme");
     if (stored === "dark" || stored === "light") {
@@ -40,7 +36,7 @@ function loadTheme() {
         applyTheme("light");
     }
 }
-
+//change theme
 function toggleTheme() {
     const isDark = document.body.classList.contains("dark");
     const newTheme = isDark ? "light" : "dark";
@@ -49,6 +45,7 @@ function toggleTheme() {
 }
 
 // ---- Helpers ----
+//get todays date
 function todayKey() {
     const d = new Date();
     return d.toISOString().slice(0, 10); // yyyy-mm-dd
@@ -73,11 +70,17 @@ function setQuote(text, index = null) {
     lastIndex = index;
 
     quoteEl.classList.add("fade-out");
+    quoteEl.classList.remove('animate');
     setTimeout(() => {
         quoteEl.textContent = text;
         currentQuoteText = text;
         quoteEl.classList.remove("fade-out");
+        void quoteEl.offsetWidth;
+        quoteEl.classList.add('animate');
+        
     }, 300);
+    
+
 }
 
 // ---- Quote of the day ----
