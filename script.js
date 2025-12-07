@@ -6,6 +6,8 @@ const quotes = quotesArray;
 const quoteEl = document.getElementById("quote");
 const metaEl = document.getElementById("quoteMeta");
 const newQuoteBtn = document.getElementById("newQuoteBtn");
+//affirmation constant
+const affirmationBtn = document.getElementById("affirmationBtn");
 const favoriteBtn = document.getElementById("favoriteBtn");
 const favoritesListEl = document.getElementById("favoritesList");
 const themeToggleBtn = document.getElementById("themeToggle");
@@ -68,14 +70,20 @@ function getRandomIndex(excludeIndex = null) {
 
 function setQuote(text, index = null) {
     lastIndex = index;
-
+    //fade out the quote
     quoteEl.classList.add("fade-out");
+    //remove animate tag if it exists
     quoteEl.classList.remove('animate');
+    //add a delay before next quote appears
     setTimeout(() => {
+        //set content to next quote
         quoteEl.textContent = text;
         currentQuoteText = text;
+        //make visible
         quoteEl.classList.remove("fade-out");
+        //trigger reflow to restart animation
         void quoteEl.offsetWidth;
+        //add animate to class to add the animation back to the text
         quoteEl.classList.add('animate');
         
     }, 300);
@@ -246,6 +254,38 @@ function shareQuote() {
     // Old browsers - display the quote and get them to copy it manually......
     fallbackPromptShare();
 }
+//affirmatin functions
+function getAffirmation() {
+    console.log("you are enough");
+    showAffirmationModal();
+}
+
+//affirmation modal
+//modal closer event listeners:
+ document.querySelector('.close-modal').addEventListener('click', () => {
+            closeModal();
+        });
+document.getElementById('affirmation-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'affirmation-modal') {
+                closeModal();
+            }
+        });
+ document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+//show modal function
+function showAffirmationModal() {
+    const modal = document.getElementById('affirmation-modal');
+    modal.style.display = 'block';
+}
+//close modal function
+function closeModal() {
+        document.getElementById('affirmation-modal').style.display = 'none';
+    }
+
+
 
 // ---- Init ----
 newQuoteBtn.addEventListener("click", showNewQuote);
@@ -253,9 +293,12 @@ favoriteBtn.addEventListener("click", addCurrentToFavorites);
 themeToggleBtn.addEventListener("click", toggleTheme);
 //sharebtn
 shareBtn.addEventListener("click", shareQuote);
+//affirmation
+affirmationBtn.addEventListener("click", getAffirmation);
 
 loadTheme();
 loadFavorites();
 renderFavorites();
 updateMeta();
 showQuoteOfTheDay();
+closeModal();
