@@ -2,6 +2,9 @@
 
 const quotes = quotesArray;
 const affirmations = affirmationsArray;
+//globa var for array function
+let affirmElIndex = 0;
+let affirmElLength = 0;
 
 // Elements
 const quoteEl = document.getElementById("quote");
@@ -269,16 +272,8 @@ function shareQuote() {
  document.querySelector('.close-modal').addEventListener('click', () => {
             closeModal();
         });
-document.getElementById('affirmation-modal').addEventListener('click', (e) => {
-            if (e.target.id === 'affirmation-modal') {
-                closeModal();
-            }
-        });
- document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeModal();
-            }
-        });
+//had to remove close modal trigger for clicking outside the div BECAUSE SPACE BAR COUNTS AS A CLICK??
+
 //show modal function
 function showAffirmationModal() {
     const modal = document.getElementById('affirmation-modal');
@@ -331,6 +326,7 @@ function affirmationAnimationStart() {
 }
 //set new affirmation
 function showNewAffirmation() {
+    console.log("showing new affirmation");
     //get a random index from within the affirmation array that is not null
     const index = getRandomAffirmationsIndex(lastIndex);
     //get the afformation of the corresponding index
@@ -358,9 +354,39 @@ function affirmationSplitAndSet(text) {
         }
         
      }
+     //global var for typing function
+     affirmElIndex = 0;
+     affirmElLength = textArray.length;
      //start animation
      affirmationAnimationStart();
 }
+
+//keypress event listener for anyting in body
+document.body.addEventListener('keydown', (key) => {
+    console.log(key.key);
+    const currentLetter = document.getElementById(affirmElIndex)
+    if (currentLetter.innerHTML == key.key) {
+        currentLetter.style.color = "white";
+        currentLetter.style.backgroundColor = "blue";
+        if (affirmElIndex == (affirmElLength - 1)){
+            setTimeout(() => {
+        
+                closeModal();
+        
+            }, 300);   
+            
+        }
+        affirmElIndex++;
+    } 
+    if (key.code == 'Space' && currentLetter.text == null) {
+        console.log("space pressed");
+        currentLetter.style.backgroundColor = "blue";
+        affirmElIndex++;
+    }
+    
+});
+
+
 // ---- Init ----
 newQuoteBtn.addEventListener("click", showNewQuote);
 favoriteBtn.addEventListener("click", addCurrentToFavorites);
