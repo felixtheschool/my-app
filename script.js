@@ -287,6 +287,8 @@ function closeModal() {
     //remove animate tag if it exists
     affirmEl.classList.remove('animate');
         document.getElementById('affirmation-modal').style.display = 'none';
+        //re-add event listener to affirmation button
+        affirmationBtn.addEventListener("click", showNewAffirmation);
     }
 
 //get random index for affirmation selection from list
@@ -337,6 +339,11 @@ function showNewAffirmation() {
     //belowcommented for testing
     //setAffirmation(text, index);
     showAffirmationModal();
+
+    //remove event listener so that pressing space will NOT recast the event
+    affirmationBtn.removeEventListener("click", showNewAffirmation);
+    
+    
 }
 
 function affirmationSplitAndSet(text) {
@@ -362,7 +369,7 @@ function affirmationSplitAndSet(text) {
 }
 
 //keypress event listener for anyting in body
-document.body.addEventListener('keydown', (key) => {
+document.body.addEventListener('keyup', (key) => {
     console.log(key.key);
     const currentLetter = document.getElementById(affirmElIndex)
     if (currentLetter.innerHTML == key.key) {
@@ -378,7 +385,7 @@ document.body.addEventListener('keydown', (key) => {
         }
         affirmElIndex++;
     } 
-    if (key.code == 'Space' && currentLetter.text == null) {
+    if (key.code == 'Space' && currentLetter.innerHTML == '&nbsp;') {
         console.log("space pressed");
         currentLetter.style.backgroundColor = "blue";
         affirmElIndex++;
