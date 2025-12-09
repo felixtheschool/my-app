@@ -210,9 +210,13 @@ body.dark button {
     
 }
 .modal-content div{
-    display:flex;
-    
+    height: fit-content;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
 }
+    
+
 .close-modal {
     
     float: right;
@@ -229,4 +233,17 @@ body.dark .modal {
 body.dark .modal .modal-content {
     background: #2c2c34;
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/*affirmation styling*/
+
+.activated {
+    background-color: #66a6ff;  
+    color: white;
+    
+}
+
+body.dark .activated {
+    background-color: #f1f1f1;
+    color: #2c2c34;
 }

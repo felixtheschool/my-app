@@ -302,23 +302,7 @@ function getRandomAffirmationsIndex(excludeIndex = null) {
 
     return index;
 }
-//set the next affirmation
-function setAffirmation(text, index = null) {
-    lastIndex = index;
-    
-    //add a delay before next quote appears
-    setTimeout(() => {
-        //set content to next quote
-        affirmEl.textContent = text;
-        
-        //make visible
-        affirmEl.classList.remove("fade-out");
-       //trigger animation
-       affirmationAnimationStart();
-        
-    }, 300);   
 
-}
 //affirmation animations!!!
 function affirmationAnimationStart() {
     //trigger reflow to restart animation
@@ -355,7 +339,7 @@ function affirmationSplitAndSet(text) {
      //loop through the array, adding each char as a p element with an id to the content
      for (const i in textArray) {
         if (textArray[i] == ' ') {
-            affirmEl.innerHTML += `<p id=${i}>&nbsp;</p>`
+            affirmEl.innerHTML += `<p id=${i} class='affirmElement'>&nbsp;</p>`
         } else {
             affirmEl.innerHTML += `<p id=${i}>${textArray[i]}</p>`
         }
@@ -373,9 +357,16 @@ document.body.addEventListener('keyup', (key) => {
     console.log(key.key);
     const currentLetter = document.getElementById(affirmElIndex)
     if (currentLetter.innerHTML == key.key) {
-        currentLetter.style.color = "white";
-        currentLetter.style.backgroundColor = "blue";
+        //currentLetter.style.color = "white";
+        //currentLetter.style.backgroundColor = "blue";
+        //add class for styling
+        currentLetter.classList.add("activated");
+        //curve left most 
+        if (affirmElIndex == 0) {
+            currentLetter.style.borderRadius = "5px 0px 0px 5px"
+        }
         if (affirmElIndex == (affirmElLength - 1)){
+            currentLetter.style.borderRadius = "0px 5px 5px 0px"
             setTimeout(() => {
         
                 closeModal();
@@ -387,7 +378,8 @@ document.body.addEventListener('keyup', (key) => {
     } 
     if (key.code == 'Space' && currentLetter.innerHTML == '&nbsp;') {
         console.log("space pressed");
-        currentLetter.style.backgroundColor = "blue";
+        //currentLetter.style.backgroundColor = "blue";
+        currentLetter.classList.add("activated");
         affirmElIndex++;
     }
     
