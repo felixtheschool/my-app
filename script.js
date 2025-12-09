@@ -110,9 +110,6 @@ const affirmationPool = [
     "I am exactly where I need to be right now."
 ];
 
-let affirmElIndex = 0;
-let affirmElLength = 0;
-
 // ====================
 // DOM ELEMENTS
 // ====================
@@ -120,8 +117,6 @@ const quoteEl = document.getElementById("quote");
 const quoteAuthorEl = document.getElementById("quoteAuthor");
 const quoteCategoryEl = document.getElementById("quoteCategory");
 const metaEl = document.getElementById("quoteMeta");
-//affirmation el
-const affirmEl = document.getElementById("modal-affirmation-content");
 
 const newQuoteBtn = document.getElementById("newQuoteBtn");
 const favoriteBtn = document.getElementById("favoriteBtn");
@@ -133,9 +128,6 @@ const typeFilterSelect = document.getElementById("typeFilter");
 
 const affirmationDisplayEl = document.getElementById("affirmationDisplay");
 const getAffirmationBtn = document.getElementById("getAffirmationBtn");
-
-//affirmation button 
-const affirmationBtn = document.getElementById("affirmationBtn");
 
 // ====================
 // STATE
@@ -221,11 +213,16 @@ function setQuoteByIndex(index) {
     lastQuoteIndex = index;
 
     quoteEl.classList.add("fade-out");
+    quoteEl.classList.remove('animate');
     setTimeout(() => {
         quoteEl.textContent = q.text;
         quoteAuthorEl.textContent = `— ${q.author}`;
         quoteCategoryEl.textContent = `Type: ${q.category}`;
         quoteEl.classList.remove("fade-out");
+         //trigger reflow to restart animation
+        void quoteEl.offsetWidth;
+        //add animate to class to add the animation back to the text
+        quoteEl.classList.add('animate');
     }, 300);
 }
 
@@ -474,24 +471,30 @@ function resetApp() {
     affirmationDisplayEl.textContent = 'Click "Get Affirmation" to see one.';
 }
 
+// =======================
+//popup affirmations stuff
+// ================
 
+//globa var for array function
+let affirmElIndex = 0;
+let affirmElLength = 0;
+//affirmation element
+const affirmEl = document.getElementById("modal-affirmation-content");
+//affirmation button
+const affirmationBtn = document.getElementById("affirmationBtn");
+const closeModalBtn = document.getElementById("closeModal");
 ///////////////////////////////////////////////////////////
 ///
 //affirmatin functions
+const affirmations = affirmationPool;
 
-
-//affirmation modal
-//modal closer event listeners:
- document.querySelector('.close-modal').addEventListener('click', () => {
-            closeModal();
-        });
-//had to remove close modal trigger for clicking outside the div BECAUSE SPACE BAR COUNTS AS A CLICK??
-
-//show modal function
 function showAffirmationModal() {
     const modal = document.getElementById('affirmation-modal');
     modal.style.display = 'block';
 }
+//modal closer event listeners:
+
+closeModalBtn.addEventListener("click", closeModal);
 //close modal function
 function closeModal() {
     affirmEl.innerHTML = '';
@@ -505,13 +508,14 @@ function closeModal() {
     }
 
 //get random index for affirmation selection from list
-function getRandomAffirmationsIndex(excludeIndex = null) {
+function getRandomAffirmationsIndex() {
+    console.log('starting index');
     if (affirmations.length === 1) return 0;
 
     let index;
-    do {
-        index = Math.floor(Math.random() * affirmations.length);
-    } while (index === excludeIndex);
+    
+    index = Math.floor(Math.random() * affirmations.length);
+    
 
     return index;
 }
@@ -527,7 +531,8 @@ function affirmationAnimationStart() {
 function showNewAffirmation() {
     console.log("showing new affirmation");
     //get a random index from within the affirmation array that is not null
-    const index = getRandomAffirmationsIndex(lastIndex);
+    const index = getRandomAffirmationsIndex();
+    console.log(index);
     //get the afformation of the corresponding index
     const text = affirmations[index]; 
     
@@ -597,6 +602,11 @@ document.body.addEventListener('keyup', (key) => {
     }
     
 });
+affirmationBtn.addEventListener("click", showNewAffirmation);
+
+
+
+
 
 
 // ====================
@@ -608,8 +618,7 @@ themeToggleBtn.addEventListener("click", toggleTheme);
 shareBtn.addEventListener("click", shareQuote);
 resetBtn.addEventListener("click", resetApp);
 getAffirmationBtn.addEventListener("click", showAffirmation);
-//affirmation
-affirmationBtn.addEventListener("click", showNewAffirmation);
+
 loadTheme();
 initTypeFilter();
 loadFavorites();

@@ -14,7 +14,7 @@ body {
     background: white;
     padding: 30px;
     border-radius: 15px;
-    width: 440px;
+    width: 700px;
     max-height: 95vh;
     overflow-y: auto;
     text-align: center;
@@ -254,18 +254,6 @@ body.dark .affirmation-text {
 }
 
 
-/* css for quote text animation*/
-.animate{
-    overflow:hidden;
-    white-space: nowrap;
-    animation: typing 1.75s steps(50) forwards;
-
-}
-@keyframes typing {
-    from {width:0;}
-    to{width:100%;}
-    
-}
 
 /*modal section*/
 
@@ -292,7 +280,8 @@ body.dark .affirmation-text {
     background: white;
     padding: 30px;
     border-radius: 15px;
-    width: 200px;
+    width: auto;
+    max-width: fit-content;
     max-height: 90vh;
     overflow-y:auto;
     text-align: center;
@@ -341,4 +330,19 @@ body.dark .modal .modal-content {
 body.dark .activated {
     background-color: #f1f1f1;
     color: #2c2c34;
+}
+
+/* css for quote text animation*/
+.animate{ 
+   
+    word-wrap: break-word;
+    animation: typing 1.75s steps(50, end);
+    overflow: hidden;
+    white-space: nowrap;
+    
+}
+@keyframes typing {
+    from {width:0;}
+    to{width:100%;}
+    
 }
