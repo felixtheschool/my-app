@@ -110,6 +110,9 @@ const affirmationPool = [
     "I am exactly where I need to be right now."
 ];
 
+let affirmElIndex = 0;
+let affirmElLength = 0;
+
 // ====================
 // DOM ELEMENTS
 // ====================
@@ -117,6 +120,8 @@ const quoteEl = document.getElementById("quote");
 const quoteAuthorEl = document.getElementById("quoteAuthor");
 const quoteCategoryEl = document.getElementById("quoteCategory");
 const metaEl = document.getElementById("quoteMeta");
+//affirmation el
+const affirmEl = document.getElementById("modal-affirmation-content");
 
 const newQuoteBtn = document.getElementById("newQuoteBtn");
 const favoriteBtn = document.getElementById("favoriteBtn");
@@ -128,6 +133,9 @@ const typeFilterSelect = document.getElementById("typeFilter");
 
 const affirmationDisplayEl = document.getElementById("affirmationDisplay");
 const getAffirmationBtn = document.getElementById("getAffirmationBtn");
+
+//affirmation button 
+const affirmationBtn = document.getElementById("affirmationBtn");
 
 // ====================
 // STATE
@@ -466,6 +474,131 @@ function resetApp() {
     affirmationDisplayEl.textContent = 'Click "Get Affirmation" to see one.';
 }
 
+
+///////////////////////////////////////////////////////////
+///
+//affirmatin functions
+
+
+//affirmation modal
+//modal closer event listeners:
+ document.querySelector('.close-modal').addEventListener('click', () => {
+            closeModal();
+        });
+//had to remove close modal trigger for clicking outside the div BECAUSE SPACE BAR COUNTS AS A CLICK??
+
+//show modal function
+function showAffirmationModal() {
+    const modal = document.getElementById('affirmation-modal');
+    modal.style.display = 'block';
+}
+//close modal function
+function closeModal() {
+    affirmEl.innerHTML = '';
+    //fade out the quote
+    affirmEl.classList.add("fade-out");
+    //remove animate tag if it exists
+    affirmEl.classList.remove('animate');
+        document.getElementById('affirmation-modal').style.display = 'none';
+        //re-add event listener to affirmation button
+        affirmationBtn.addEventListener("click", showNewAffirmation);
+    }
+
+//get random index for affirmation selection from list
+function getRandomAffirmationsIndex(excludeIndex = null) {
+    if (affirmations.length === 1) return 0;
+
+    let index;
+    do {
+        index = Math.floor(Math.random() * affirmations.length);
+    } while (index === excludeIndex);
+
+    return index;
+}
+
+//affirmation animations!!!
+function affirmationAnimationStart() {
+    //trigger reflow to restart animation
+    void affirmEl.offsetWidth;
+    //add animate to class to add the animation back to the text
+    affirmEl.classList.add('animate');
+}
+//set new affirmation
+function showNewAffirmation() {
+    console.log("showing new affirmation");
+    //get a random index from within the affirmation array that is not null
+    const index = getRandomAffirmationsIndex(lastIndex);
+    //get the afformation of the corresponding index
+    const text = affirmations[index]; 
+    
+   affirmationSplitAndSet(text);
+    //set the affirmation element;
+    //belowcommented for testing
+    //setAffirmation(text, index);
+    showAffirmationModal();
+
+    //remove event listener so that pressing space will NOT recast the event
+    affirmationBtn.removeEventListener("click", showNewAffirmation);
+    
+    
+}
+
+function affirmationSplitAndSet(text) {
+    //set innerhtml of the div to empty
+    affirmEl.innerHTML = '';
+    //split the string into an array of characters
+     const textArray = text.split('');
+     console.log(textArray);
+     //loop through the array, adding each char as a p element with an id to the content
+     for (const i in textArray) {
+        if (textArray[i] == ' ') {
+            affirmEl.innerHTML += `<p id=${i} class='affirmElement'>&nbsp;</p>`
+        } else {
+            affirmEl.innerHTML += `<p id=${i}>${textArray[i]}</p>`
+        }
+        
+     }
+     //global var for typing function
+     affirmElIndex = 0;
+     affirmElLength = textArray.length;
+     //start animation
+     affirmationAnimationStart();
+}
+
+//keypress event listener for anyting in body
+document.body.addEventListener('keyup', (key) => {
+    console.log(key.key);
+    const currentLetter = document.getElementById(affirmElIndex)
+    if (currentLetter.innerHTML == key.key) {
+        //currentLetter.style.color = "white";
+        //currentLetter.style.backgroundColor = "blue";
+        //add class for styling
+        currentLetter.classList.add("activated");
+        //curve left most 
+        if (affirmElIndex == 0) {
+            currentLetter.style.borderRadius = "5px 0px 0px 5px"
+        }
+        if (affirmElIndex == (affirmElLength - 1)){
+            currentLetter.style.borderRadius = "0px 5px 5px 0px"
+            setTimeout(() => {
+        
+                closeModal();
+        
+            }, 300);   
+            
+        }
+        affirmElIndex++;
+    } 
+    if (key.code == 'Space' && currentLetter.innerHTML == '&nbsp;') {
+        console.log("space pressed");
+        //currentLetter.style.backgroundColor = "blue";
+        currentLetter.classList.add("activated");
+        affirmElIndex++;
+    }
+    
+});
+
+
 // ====================
 // EVENT LISTENERS & INIT
 // ====================
@@ -475,10 +608,12 @@ themeToggleBtn.addEventListener("click", toggleTheme);
 shareBtn.addEventListener("click", shareQuote);
 resetBtn.addEventListener("click", resetApp);
 getAffirmationBtn.addEventListener("click", showAffirmation);
-
+//affirmation
+affirmationBtn.addEventListener("click", showNewAffirmation);
 loadTheme();
 initTypeFilter();
 loadFavorites();
 renderFavorites();
 updateMeta();
 showQuoteOfTheDay();
+closeModal();
