@@ -1,131 +1,16 @@
 //import quotes from other files load.
 
-
+const quotes = quotesArray;
+const affirmations = affirmationsArray;
 //globa var for array function
 let affirmElIndex = 0;
 let affirmElLength = 0;
-// ====================
-// STOIC QUOTE POOL
-// ====================
-const quotes = [
-    { id: 1, text: "You have power over your mind — not outside events. Realize this, and you will find strength.", author: "Marcus Aurelius", category: "control" },
-    { id: 2, text: "We suffer more often in imagination than in reality.", author: "Seneca", category: "mind" },
-    { id: 3, text: "It’s not what happens to you, but how you react to it that matters.", author: "Epictetus", category: "control" },
-    { id: 4, text: "He who fears death will never do anything worthy of a man who is alive.", author: "Seneca", category: "time" },
-    { id: 5, text: "The happiness of your life depends upon the quality of your thoughts.", author: "Marcus Aurelius", category: "mind" },
-    { id: 6, text: "No man is free who is not master of himself.", author: "Epictetus", category: "control" },
-    { id: 7, text: "Luck is what happens when preparation meets opportunity.", author: "Seneca", category: "simplicity" },
-    { id: 8, text: "If it is not right, do not do it; if it is not true, do not say it.", author: "Marcus Aurelius", category: "virtue" },
-    { id: 9, text: "Wealth consists not in having great possessions, but in having few wants.", author: "Epictetus", category: "simplicity" },
-    { id: 10, text: "Begin at once to live, and count each separate day as a separate life.", author: "Seneca", category: "time" },
-    { id: 11, text: "Very little is needed to make a happy life; it is all within yourself.", author: "Marcus Aurelius", category: "simplicity" },
-    { id: 12, text: "Make the mind tougher by exposing it to adversity.", author: "Seneca", category: "adversity" },
-    { id: 13, text: "First say to yourself what you would be; then do what you have to do.", author: "Epictetus", category: "virtue" },
-    { id: 14, text: "Difficulties strengthen the mind, as labor does the body.", author: "Seneca", category: "adversity" },
-    { id: 15, text: "The best revenge is not to be like your enemy.", author: "Marcus Aurelius", category: "virtue" },
-    { id: 16, text: "Freedom is the only worthy goal in life.", author: "Epictetus", category: "control" },
-    { id: 17, text: "He who angers you conquers you.", author: "Elizabeth Kenny", category: "mind" },
-    { id: 18, text: "Associate with people who are likely to improve you.", author: "Seneca", category: "wisdom" },
-    { id: 19, text: "Waste no more time arguing what a good man should be. Be one.", author: "Marcus Aurelius", category: "virtue" },
-    { id: 20, text: "Circumstances don’t make the man; they reveal him to himself.", author: "Epictetus", category: "virtue" },
-    { id: 21, text: "To be even-minded is the greatest virtue.", author: "Heraclitus", category: "mind" },
-    { id: 22, text: "Sometimes even to live is an act of courage.", author: "Seneca", category: "adversity" },
-    { id: 23, text: "The soul becomes dyed with the color of its thoughts.", author: "Marcus Aurelius", category: "mind" },
-    { id: 24, text: "Only the educated are free.", author: "Epictetus", category: "wisdom" },
-    { id: 25, text: "It is the power of the mind to be unconquerable.", author: "Seneca", category: "mind" },
-    { id: 26, text: "Be tolerant with others and strict with yourself.", author: "Marcus Aurelius", category: "virtue" },
-    { id: 27, text: "Control what you can. Let go of what you can’t.", author: "Epictetus", category: "control" },
-    { id: 28, text: "Don’t explain your philosophy. Embody it.", author: "Epictetus", category: "virtue" },
-    { id: 29, text: "If you live in harmony with nature, you will never be poor.", author: "Seneca", category: "simplicity" },
-    { id: 30, text: "Accept the things to which fate binds you, and love the people with whom fate brings you together.", author: "Marcus Aurelius", category: "control" },
-    { id: 31, text: "Man conquers the world by conquering himself.", author: "Zeno of Citium", category: "adversity" },
-    { id: 32, text: "No great thing is created suddenly.", author: "Epictetus", category: "adversity" },
-    { id: 33, text: "The whole future lies in uncertainty: live immediately.", author: "Seneca", category: "time" },
-    { id: 34, text: "How much more grievous are the consequences of anger than the causes of it.", author: "Marcus Aurelius", category: "mind" },
-    { id: 35, text: "We should always be asking ourselves: Is this something that is necessary?", author: "Marcus Aurelius", category: "virtue" },
-    { id: 36, text: "You become what you give your attention to.", author: "Epictetus", category: "mind" },
-    { id: 37, text: "He suffers more than necessary, who suffers before it is necessary.", author: "Seneca", category: "mind" },
-    { id: 38, text: "What stands in the way becomes the way.", author: "Marcus Aurelius", category: "adversity" },
-    { id: 39, text: "To bear trials with a calm mind robs misfortune of its strength.", author: "Seneca", category: "adversity" },
-    { id: 40, text: "If you want to improve, be content to be thought foolish and stupid.", author: "Epictetus", category: "adversity" },
-    { id: 41, text: "A gem cannot be polished without friction, nor a man perfected without trials.", author: "Seneca", category: "adversity" },
-    { id: 42, text: "Be content to seem what you really are.", author: "Marcus Aurelius", category: "virtue" },
-    { id: 43, text: "Nothing endures but change.", author: "Heraclitus", category: "time" },
-    { id: 44, text: "The greater the difficulty, the more glory in surmounting it.", author: "Epicurus", category: "adversity" },
-    { id: 45, text: "Where is the harm in saying what you think?", author: "Epictetus", category: "wisdom" },
-    { id: 46, text: "Enjoy what you can, endure what you must.", author: "Marcus Aurelius", category: "adversity" },
-    { id: 47, text: "The mind that is anxious about future events is miserable.", author: "Seneca", category: "mind" },
-    { id: 48, text: "Nothing is worth doing pointlessly.", author: "Marcus Aurelius", category: "virtue" },
-    { id: 49, text: "No evil is great unless you think it so.", author: "Epictetus", category: "mind" },
-    { id: 50, text: "Do every act of your life as though it were the very last.", author: "Marcus Aurelius", category: "time" }
-];
 
-// ====================
-// AFFIRMATION POOL (50)
-// ====================
-const affirmationPool = [
-    "I am capable of handling whatever comes my way.",
-    "I choose to focus on what I can control.",
-    "I am growing stronger and wiser every day.",
-    "I am worthy of love, success, and inner peace.",
-    "I learn from my challenges and move forward.",
-    "I am proud of how far I have come.",
-    "I allow myself to make mistakes and grow from them.",
-    "I bring value to the people around me.",
-    "I deserve time to rest and recharge.",
-    "I am becoming the best version of myself.",
-    "I let go of what I cannot change.",
-    "I speak kindly to myself.",
-    "I am patient with my journey.",
-    "I am allowed to take up space.",
-    "I am resilient and can rise after any setback.",
-    "I trust myself to make good decisions.",
-    "I am grateful for the lessons life gives me.",
-    "I believe in my ability to figure things out.",
-    "I am stronger than my doubts.",
-    "I can create the future I want.",
-    "I am doing my best, and that is enough.",
-    "I choose progress over perfection.",
-    "I am allowed to start again.",
-    "I am worthy of good things.",
-    "I am calm, centered, and in control of my responses.",
-    "I bring creativity and curiosity to what I do.",
-    "I am learning to be kind to myself.",
-    "I am brave enough to try new things.",
-    "I am in charge of how I show up today.",
-    "I am worthy of respect, including from myself.",
-    "I release worry and invite peace.",
-    "I choose thoughts that support and empower me.",
-    "I am open to new possibilities.",
-    "I am grateful for the progress I’ve already made.",
-    "I am building habits that support my goals.",
-    "I forgive myself for past mistakes.",
-    "I am enough exactly as I am, while still growing.",
-    "I trust the timing of my life.",
-    "I am learning something valuable every day.",
-    "I am steady, even when things feel uncertain.",
-    "I welcome change as an opportunity to grow.",
-    "I am allowed to set boundaries that protect my peace.",
-    "I am capable of creating positive change.",
-    "I handle difficulties with courage and grace.",
-    "I am proud of myself for not giving up.",
-    "I am becoming more confident in my abilities.",
-    "I choose to be present in this moment.",
-    "I am grateful for my body, mind, and spirit.",
-    "I am worthy of my dreams.",
-    "I am exactly where I need to be right now."
-];
-const affirmations = affirmationPool;
-// ====================
-// DOM ELEMENTS
-// ====================
+// Elements
 const quoteEl = document.getElementById("quote");
 //affirmation el
 const affirmEl = document.getElementById("modal-affirmation-content");
-const quoteAuthorEl = document.getElementById("quoteAuthor");
-const quoteCategoryEl = document.getElementById("quoteCategory");
 const metaEl = document.getElementById("quoteMeta");
-
 const newQuoteBtn = document.getElementById("newQuoteBtn");
 //affirmation constant
 const affirmationBtn = document.getElementById("affirmationBtn");
@@ -133,26 +18,14 @@ const favoriteBtn = document.getElementById("favoriteBtn");
 const favoritesListEl = document.getElementById("favoritesList");
 const themeToggleBtn = document.getElementById("themeToggle");
 const shareBtn = document.getElementById("shareBtn");
-const resetBtn = document.getElementById("resetBtn");
-const typeFilterSelect = document.getElementById("typeFilter");
 
-const affirmationDisplayEl = document.getElementById("affirmationDisplay");
-const getAffirmationBtn = document.getElementById("getAffirmationBtn");
-
-// ====================
-// STATE
-// ====================
-let lastQuoteIndex = null;
+// State
+let lastIndex = null;
 const seenQuotes = new Set();
-let currentQuote = null;
+let currentQuoteText = quoteEl.textContent;
 let favorites = [];
-let currentFilter = "all";
 
-let lastAffirmationIndex = null;
-
-// ====================
-// THEME / DARK MODE
-// ====================
+// ---- Theme / Dark mode ----
 function applyTheme(theme) {
     if (theme === "dark") {
         document.body.classList.add("dark");
@@ -181,37 +54,21 @@ function toggleTheme() {
 
 // ---- Helpers ----
 //get todays date
-// ====================
-// QUOTE HELPERS
-// ====================
 function todayKey() {
     const d = new Date();
-    return d.toISOString().slice(0, 10);
+    return d.toISOString().slice(0, 10); // yyyy-mm-dd
 }
 
 function updateMeta() {
     metaEl.textContent = `You’ve seen ${seenQuotes.size} of ${quotes.length} quotes.`;
 }
 
-function getFilteredIndices() {
-    if (currentFilter === "all") {
-        return quotes.map((_, idx) => idx);
-    }
-    return quotes
-        .map((q, idx) => ({ q, idx }))
-        .filter(item => item.q.category === currentFilter)
-        .map(item => item.idx);
-}
-
-function getRandomQuoteIndex(excludeIndex = null) {
-    const candidates = getFilteredIndices();
-    if (candidates.length === 0) return null;
-    if (candidates.length === 1) return candidates[0];
+function getRandomIndex(excludeIndex = null) {
+    if (quotes.length === 1) return 0;
 
     let index;
     do {
-        const randomPos = Math.floor(Math.random() * candidates.length);
-        index = candidates[randomPos];
+        index = Math.floor(Math.random() * quotes.length);
     } while (index === excludeIndex);
 
     return index;
@@ -220,13 +77,6 @@ function getRandomQuoteIndex(excludeIndex = null) {
 function setQuote(text, index = null) {
     lastIndex = index;
     //fade out the quote
-function setQuoteByIndex(index) {
-    if (index === null || index === undefined || !quotes[index]) return;
-
-    const q = quotes[index];
-    currentQuote = q;
-    lastQuoteIndex = index;
-
     quoteEl.classList.add("fade-out");
     //remove animate tag if it exists
     quoteEl.classList.remove('animate');
@@ -236,9 +86,6 @@ function setQuoteByIndex(index) {
         quoteEl.textContent = text;
         currentQuoteText = text;
         //make visible
-        quoteEl.textContent = q.text;
-        quoteAuthorEl.textContent = `— ${q.author}`;
-        quoteCategoryEl.textContent = `Type: ${q.category}`;
         quoteEl.classList.remove("fade-out");
         //trigger reflow to restart animation
         void quoteEl.offsetWidth;
@@ -250,59 +97,52 @@ function setQuoteByIndex(index) {
 
 }
 
-// ====================
-// QUOTE OF THE DAY
-// ====================
+// ---- Quote of the day ----
 function showQuoteOfTheDay() {
     const key = todayKey();
     const stored = localStorage.getItem("quoteOfTheDay");
     if (stored) {
         try {
             const parsed = JSON.parse(stored);
-            if (parsed.date === key && typeof parsed.index === "number") {
-                const index = parsed.index;
-                if (quotes[index]) {
-                    seenQuotes.add(index);
-                    updateMeta();
-                    setQuoteByIndex(index);
-                    return;
+            if (parsed.date === key && typeof parsed.quote === "string") {
+                setQuote(parsed.quote, parsed.index);
+                if (typeof parsed.index === "number") {
+                    seenQuotes.add(parsed.index);
                 }
+                updateMeta();
+                return;
             }
         } catch (e) {
             // ignore parse error
         }
     }
 
-    // New day or invalid data → pick from all quotes
-    const allIndices = quotes.map((_, idx) => idx);
-    const randomPos = Math.floor(Math.random() * allIndices.length);
-    const index = allIndices[randomPos];
+    // New day or invalid stored data
+    const index = getRandomIndex();
+    const text = quotes[index];
 
+    setQuote(text, index);
     seenQuotes.add(index);
     updateMeta();
-    setQuoteByIndex(index);
 
-    localStorage.setItem("quoteOfTheDay", JSON.stringify({ date: key, index }));
+    localStorage.setItem(
+        "quoteOfTheDay",
+        JSON.stringify({ date: key, quote: text, index })
+    );
 }
 
-// ====================
-// NEW QUOTE BUTTON
-// ====================
+// Button: random new quote (not limited to 1/day)
 function showNewQuote() {
-    const index = getRandomQuoteIndex(lastQuoteIndex);
-    if (index === null) {
-        alert("No quotes found for this type. Try another filter.");
-        return;
-    }
+    const index = getRandomIndex(lastIndex);
+    const text = quotes[index];
 
     seenQuotes.add(index);
     updateMeta();
-    setQuoteByIndex(index);
+
+    setQuote(text, index);
 }
 
-// ====================
-// FAVORITES
-// ====================
+// ---- Favorites ----
 function loadFavorites() {
     const stored = localStorage.getItem("favoriteQuotes");
     if (stored) {
@@ -323,20 +163,20 @@ function renderFavorites() {
 
     if (favorites.length === 0) {
         const li = document.createElement("li");
-        li.textContent = "No favorites yet. Save a quote you like!";
+        li.textContent = "No favorites yet.";
         li.style.fontSize = "0.8rem";
         li.style.color = "#777";
         favoritesListEl.appendChild(li);
         return;
     }
 
-    favorites.forEach((fav, index) => {
+    favorites.forEach((text, index) => {
         const li = document.createElement("li");
         li.className = "favorite-item";
 
         const span = document.createElement("span");
         span.className = "favorite-text";
-        span.textContent = fav;
+        span.textContent = text;
 
         const removeBtn = document.createElement("button");
         removeBtn.className = "remove-fav";
@@ -350,18 +190,15 @@ function renderFavorites() {
 }
 
 function addCurrentToFavorites() {
-    if (!currentQuote) {
-        alert("Get a quote first, then save it.");
-        return;
-    }
+    const text = currentQuoteText.trim();
+    if (!text || text === "Click the button for inspiration!") return;
 
-    const favString = `"${currentQuote.text}" — ${currentQuote.author} [${currentQuote.category}]`;
-    if (favorites.includes(favString)) {
+    if (favorites.includes(text)) {
         alert("This quote is already in your favorites.");
         return;
     }
 
-    favorites.push(favString);
+    favorites.push(text);
     saveFavorites();
     renderFavorites();
 }
@@ -375,34 +212,39 @@ favoritesListEl.addEventListener("click", (event) => {
     }
 });
 
-// ====================
-// SHARE QUOTE
-// ====================
+// ---- Share ----
+//falback function for if the copy to clipboard fails
 function fallbackPromptShare() {
-    if (!currentQuote) return;
-    const shareText = `"${currentQuote.text}" — ${currentQuote.author}`;
-    window.prompt("Copy this quote:", shareText);
+    // Basic fallback: show the quote in a prompt the user can copy from
+    window.prompt("Copy this quote:", `"${currentQuoteText}"`);
 }
-
+//basic cop to clipboard function
 function shareQuote() {
-    if (!currentQuote) {
+    //null if empty
+    const text = currentQuoteText && currentQuoteText.trim();
+    //catch if null or if default
+    if (!text || text === "Click the button for inspiration!") {
         alert("Get a quote first, then share it!");
         return;
     }
+    //remove via daily motivation from text quote end.
+    const shareText = `"${text}" — via Daily Motivation`;
 
-    const shareText = `"${currentQuote.text}" — ${currentQuote.author} (type: ${currentQuote.category})`;
-
+    // Modern browsers (especially mobile) navigator api.
     if (navigator.share) {
         navigator
             .share({
-                title: "Stoic Motivation",
+                title: "Daily Motivation",
                 text: shareText,
                 url: window.location.href
             })
-            .catch(() => {});
+            .catch(() => {
+                // user cancelled or share failed – silently ignore
+            });
         return;
     }
 
+    // Clipboard API fallback, this seems to work with firefox.
     if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard
             .writeText(shareText)
@@ -415,6 +257,7 @@ function shareQuote() {
         return;
     }
 
+    // Old browsers - display the quote and get them to copy it manually......
     fallbackPromptShare();
 }
 
@@ -456,35 +299,6 @@ function getRandomAffirmationsIndex(excludeIndex = null) {
     do {
         index = Math.floor(Math.random() * affirmations.length);
     } while (index === excludeIndex);
-// ====================
-// TYPE FILTER
-// ====================
-function initTypeFilter() {
-    const categories = Array.from(new Set(quotes.map(q => q.category))).sort();
-    categories.forEach(cat => {
-        const opt = document.createElement("option");
-        opt.value = cat;
-        opt.textContent = cat[0].toUpperCase() + cat.slice(1);
-        typeFilterSelect.appendChild(opt);
-    });
-
-    typeFilterSelect.addEventListener("change", () => {
-        currentFilter = typeFilterSelect.value;
-        showNewQuote();
-    });
-}
-
-// ====================
-// AFFIRMATION POOL LOGIC
-// ====================
-function getRandomAffirmationIndex(exclude = null) {
-    if (affirmationPool.length === 0) return null;
-    if (affirmationPool.length === 1) return 0;
-
-    let index;
-    do {
-        index = Math.floor(Math.random() * affirmationPool.length);
-    } while (index === exclude);
 
     return index;
 }
@@ -573,64 +387,15 @@ document.body.addEventListener('keyup', (key) => {
 
 
 // ---- Init ----
-function showAffirmation() {
-    const index = getRandomAffirmationIndex(lastAffirmationIndex);
-    if (index === null) return;
-
-    lastAffirmationIndex = index;
-    affirmationDisplayEl.textContent = affirmationPool[index];
-}
-
-// ====================
-// RESET APP
-// ====================
-function resetApp() {
-    const confirmed = window.confirm(
-        "This will clear your favorites, theme, and quote-of-the-day history. Continue?"
-    );
-    if (!confirmed) return;
-
-    localStorage.removeItem("favoriteQuotes");
-    localStorage.removeItem("quoteOfTheDay");
-    localStorage.removeItem("theme");
-    // legacy keys (if any)
-    localStorage.removeItem("affirmations");
-    localStorage.removeItem("lastQuote");
-
-    favorites = [];
-    seenQuotes.clear();
-    currentQuote = null;
-    lastQuoteIndex = null;
-    lastAffirmationIndex = null;
-
-    currentFilter = "all";
-    typeFilterSelect.value = "all";
-
-    applyTheme("light");
-    renderFavorites();
-    updateMeta();
-
-    quoteEl.textContent = 'Click "New Quote" or wait for Quote of the Day.';
-    quoteAuthorEl.textContent = "—";
-    quoteCategoryEl.textContent = "Type: —";
-
-    affirmationDisplayEl.textContent = 'Click "Get Affirmation" to see one.';
-}
-
-// ====================
-// EVENT LISTENERS & INIT
-// ====================
 newQuoteBtn.addEventListener("click", showNewQuote);
 favoriteBtn.addEventListener("click", addCurrentToFavorites);
 themeToggleBtn.addEventListener("click", toggleTheme);
+//sharebtn
 shareBtn.addEventListener("click", shareQuote);
 //affirmation
 affirmationBtn.addEventListener("click", showNewAffirmation);
-resetBtn.addEventListener("click", resetApp);
-getAffirmationBtn.addEventListener("click", showAffirmation);
 
 loadTheme();
-initTypeFilter();
 loadFavorites();
 renderFavorites();
 updateMeta();
