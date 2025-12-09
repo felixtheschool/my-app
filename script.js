@@ -1,3 +1,9 @@
+//import quotes from other files load.
+
+
+//globa var for array function
+let affirmElIndex = 0;
+let affirmElLength = 0;
 // ====================
 // STOIC QUOTE POOL
 // ====================
@@ -109,16 +115,20 @@ const affirmationPool = [
     "I am worthy of my dreams.",
     "I am exactly where I need to be right now."
 ];
-
+const affirmations = affirmationPool;
 // ====================
 // DOM ELEMENTS
 // ====================
 const quoteEl = document.getElementById("quote");
+//affirmation el
+const affirmEl = document.getElementById("modal-affirmation-content");
 const quoteAuthorEl = document.getElementById("quoteAuthor");
 const quoteCategoryEl = document.getElementById("quoteCategory");
 const metaEl = document.getElementById("quoteMeta");
 
 const newQuoteBtn = document.getElementById("newQuoteBtn");
+//affirmation constant
+const affirmationBtn = document.getElementById("affirmationBtn");
 const favoriteBtn = document.getElementById("favoriteBtn");
 const favoritesListEl = document.getElementById("favoritesList");
 const themeToggleBtn = document.getElementById("themeToggle");
@@ -152,7 +162,7 @@ function applyTheme(theme) {
         themeToggleBtn.textContent = "🌙";
     }
 }
-
+// load stored theme
 function loadTheme() {
     const stored = localStorage.getItem("theme");
     if (stored === "dark" || stored === "light") {
@@ -161,7 +171,7 @@ function loadTheme() {
         applyTheme("light");
     }
 }
-
+//change theme
 function toggleTheme() {
     const isDark = document.body.classList.contains("dark");
     const newTheme = isDark ? "light" : "dark";
@@ -169,6 +179,8 @@ function toggleTheme() {
     localStorage.setItem("theme", newTheme);
 }
 
+// ---- Helpers ----
+//get todays date
 // ====================
 // QUOTE HELPERS
 // ====================
@@ -205,6 +217,9 @@ function getRandomQuoteIndex(excludeIndex = null) {
     return index;
 }
 
+function setQuote(text, index = null) {
+    lastIndex = index;
+    //fade out the quote
 function setQuoteByIndex(index) {
     if (index === null || index === undefined || !quotes[index]) return;
 
@@ -213,12 +228,26 @@ function setQuoteByIndex(index) {
     lastQuoteIndex = index;
 
     quoteEl.classList.add("fade-out");
+    //remove animate tag if it exists
+    quoteEl.classList.remove('animate');
+    //add a delay before next quote appears
     setTimeout(() => {
+        //set content to next quote
+        quoteEl.textContent = text;
+        currentQuoteText = text;
+        //make visible
         quoteEl.textContent = q.text;
         quoteAuthorEl.textContent = `— ${q.author}`;
         quoteCategoryEl.textContent = `Type: ${q.category}`;
         quoteEl.classList.remove("fade-out");
+        //trigger reflow to restart animation
+        void quoteEl.offsetWidth;
+        //add animate to class to add the animation back to the text
+        quoteEl.classList.add('animate');
+        
     }, 300);
+    
+
 }
 
 // ====================
@@ -389,6 +418,44 @@ function shareQuote() {
     fallbackPromptShare();
 }
 
+
+///////////////////////////////////////////////////////////
+///
+//affirmatin functions
+
+
+//affirmation modal
+//modal closer event listeners:
+ document.querySelector('.close-modal').addEventListener('click', () => {
+            closeModal();
+        });
+//had to remove close modal trigger for clicking outside the div BECAUSE SPACE BAR COUNTS AS A CLICK??
+
+//show modal function
+function showAffirmationModal() {
+    const modal = document.getElementById('affirmation-modal');
+    modal.style.display = 'block';
+}
+//close modal function
+function closeModal() {
+    affirmEl.innerHTML = '';
+    //fade out the quote
+    affirmEl.classList.add("fade-out");
+    //remove animate tag if it exists
+    affirmEl.classList.remove('animate');
+        document.getElementById('affirmation-modal').style.display = 'none';
+        //re-add event listener to affirmation button
+        affirmationBtn.addEventListener("click", showNewAffirmation);
+    }
+
+//get random index for affirmation selection from list
+function getRandomAffirmationsIndex(excludeIndex = null) {
+    if (affirmations.length === 1) return 0;
+
+    let index;
+    do {
+        index = Math.floor(Math.random() * affirmations.length);
+    } while (index === excludeIndex);
 // ====================
 // TYPE FILTER
 // ====================
@@ -422,6 +489,90 @@ function getRandomAffirmationIndex(exclude = null) {
     return index;
 }
 
+//affirmation animations!!!
+function affirmationAnimationStart() {
+    //trigger reflow to restart animation
+    void affirmEl.offsetWidth;
+    //add animate to class to add the animation back to the text
+    affirmEl.classList.add('animate');
+}
+//set new affirmation
+function showNewAffirmation() {
+    console.log("showing new affirmation");
+    //get a random index from within the affirmation array that is not null
+    const index = getRandomAffirmationsIndex(lastIndex);
+    //get the afformation of the corresponding index
+    const text = affirmations[index]; 
+    
+   affirmationSplitAndSet(text);
+    //set the affirmation element;
+    //belowcommented for testing
+    //setAffirmation(text, index);
+    showAffirmationModal();
+
+    //remove event listener so that pressing space will NOT recast the event
+    affirmationBtn.removeEventListener("click", showNewAffirmation);
+    
+    
+}
+
+function affirmationSplitAndSet(text) {
+    //set innerhtml of the div to empty
+    affirmEl.innerHTML = '';
+    //split the string into an array of characters
+     const textArray = text.split('');
+     console.log(textArray);
+     //loop through the array, adding each char as a p element with an id to the content
+     for (const i in textArray) {
+        if (textArray[i] == ' ') {
+            affirmEl.innerHTML += `<p id=${i} class='affirmElement'>&nbsp;</p>`
+        } else {
+            affirmEl.innerHTML += `<p id=${i}>${textArray[i]}</p>`
+        }
+        
+     }
+     //global var for typing function
+     affirmElIndex = 0;
+     affirmElLength = textArray.length;
+     //start animation
+     affirmationAnimationStart();
+}
+
+//keypress event listener for anyting in body
+document.body.addEventListener('keyup', (key) => {
+    console.log(key.key);
+    const currentLetter = document.getElementById(affirmElIndex)
+    if (currentLetter.innerHTML == key.key) {
+        //currentLetter.style.color = "white";
+        //currentLetter.style.backgroundColor = "blue";
+        //add class for styling
+        currentLetter.classList.add("activated");
+        //curve left most 
+        if (affirmElIndex == 0) {
+            currentLetter.style.borderRadius = "5px 0px 0px 5px"
+        }
+        if (affirmElIndex == (affirmElLength - 1)){
+            currentLetter.style.borderRadius = "0px 5px 5px 0px"
+            setTimeout(() => {
+        
+                closeModal();
+        
+            }, 300);   
+            
+        }
+        affirmElIndex++;
+    } 
+    if (key.code == 'Space' && currentLetter.innerHTML == '&nbsp;') {
+        console.log("space pressed");
+        //currentLetter.style.backgroundColor = "blue";
+        currentLetter.classList.add("activated");
+        affirmElIndex++;
+    }
+    
+});
+
+
+// ---- Init ----
 function showAffirmation() {
     const index = getRandomAffirmationIndex(lastAffirmationIndex);
     if (index === null) return;
@@ -473,6 +624,8 @@ newQuoteBtn.addEventListener("click", showNewQuote);
 favoriteBtn.addEventListener("click", addCurrentToFavorites);
 themeToggleBtn.addEventListener("click", toggleTheme);
 shareBtn.addEventListener("click", shareQuote);
+//affirmation
+affirmationBtn.addEventListener("click", showNewAffirmation);
 resetBtn.addEventListener("click", resetApp);
 getAffirmationBtn.addEventListener("click", showAffirmation);
 
@@ -482,3 +635,4 @@ loadFavorites();
 renderFavorites();
 updateMeta();
 showQuoteOfTheDay();
+closeModal();
