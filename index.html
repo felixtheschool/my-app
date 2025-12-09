@@ -3,16 +3,43 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Daily Motivation</title>
+    <title>Stoic Motivation & Affirmations App</title>
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-    <div class="container">
-        <div class="header-row">
-            <h1>Daily Motivation</h1>
-            <button id="themeToggle" class="theme-toggle">🌙</button>
-        </div>
+<div class="container">
+    <div class="header-row">
+        <h1>Stoic Motivation & Affirmations</h1>
+        <button id="themeToggle" class="theme-toggle">🌙</button>
+    </div>
+
+    <!-- QUOTE SECTION -->
+    <p id="quote" class="quote">Click "New Quote" or wait for Quote of the Day.</p>
+    <p id="quoteAuthor" class="meta author">—</p>
+    <p id="quoteCategory" class="meta category">Type: —</p>
+
+    <div class="filter-row">
+        <label for="typeFilter" class="meta">Filter by type:</label>
+        <select id="typeFilter">
+            <option value="all">All types</option>
+            <!-- JS will inject more -->
+        </select>
+    </div>
+
+    <p id="quoteMeta" class="meta">You’ve seen 0 of 0 quotes.</p>
+
+    <div class="buttons">
+        <button id="newQuoteBtn">New Quote</button>
+        <button id="favoriteBtn">❤️ Save Quote</button>
+        <button id="shareBtn">📤 Share Quote</button>
+        <button id="resetBtn">Reset App</button>
+    </div>
+
+    <div class="favorites">
+        <h2>Favorite Quotes</h2>
+        <ul id="favoritesList"></ul>
+    </div>
 
         <p id="quote" class="quote">Click the button for inspiration!</p>
         
@@ -23,13 +50,24 @@
             <button id="affirmationBtn" tabindex="-1">Get Affirmation</button>
             <button id="favoriteBtn">❤️ Save to Favorites</button>
             <button id="shareBtn">📤 Share</button>
+    <!-- AFFIRMATION POOL SECTION -->
+    <div class="affirmations">
+        <h2>Affirmation Pool</h2>
+        <p class="meta">
+            50 built-in affirmations. Only one is shown at a time, and only after you click the button.
+        </p>
+
+        <div class="affirmation-display-box">
+            <p id="affirmationDisplay" class="affirmation-text">
+                Click "Get Affirmation" to see one.
+            </p>
         </div>
 
-        <div class="favorites">
-            <h2>Favorites</h2>
-            <ul id="favoritesList"></ul>
+        <div class="affirmation-buttons">
+            <button id="getAffirmationBtn">✨ Get Affirmation</button>
         </div>
     </div>
+</div>
 
     <div id="affirmation-modal" class="modal">
         <div class="modal-content">
@@ -40,7 +78,8 @@
 
    
 
-    <script src="quotes.js"></script>
-    <script src="script.js"></script>
+    
+    
+<script src="script.js"></script>
 </body>
 </html>

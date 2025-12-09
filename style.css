@@ -1,3 +1,4 @@
+/* Global layout */
 body {
     background: linear-gradient(135deg, #89f7fe, #66a6ff);
     font-family: Arial, sans-serif;
@@ -13,8 +14,8 @@ body {
     background: white;
     padding: 30px;
     border-radius: 15px;
-    width: 360px;
-    max-height: 90vh;
+    width: 440px;
+    max-height: 95vh;
     overflow-y: auto;
     text-align: center;
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -32,12 +33,17 @@ body {
     
 }
 
-/* header row */
+/* Header */
 .header-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 10px;
+}
+
+h1 {
+    margin-top: 0;
+    font-size: 1.3rem;
 }
 
 .theme-toggle {
@@ -49,10 +55,7 @@ body {
     cursor: pointer;
 }
 
-h1 {
-    margin-top: 0;
-}
-
+/* Gradient quote text */
 .quote {
     min-height: 80px;
     font-size: 1.1rem;
@@ -60,25 +63,58 @@ h1 {
     opacity: 1;
     transition: opacity 0.3s ease;
     
+    margin-bottom: 8px;
+
+    background: linear-gradient(to right, #f8b195, #f67280, #c06c84);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
 }
 
 .quote.fade-out {
     opacity: 0;
 }
 
+/* Meta text */
 .meta {
     font-size: 0.8rem;
     color: #777;
-    margin-top: 5px;
-    margin-bottom: 15px;
+    margin: 2px 0;
 }
 
+.author {
+    font-style: italic;
+}
+
+.category {
+    text-transform: capitalize;
+}
+
+/* Filter row */
+.filter-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 8px;
+    margin-bottom: 6px;
+}
+
+.filter-row select {
+    font-size: 0.8rem;
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+/* Buttons */
 .buttons {
     display: flex;
     justify-content: center;
     gap: 10px;
     flex-wrap: wrap;
-    margin-bottom: 20px;
+    margin: 16px 0 20px 0;
 }
 
 button {
@@ -111,9 +147,18 @@ button:hover {
     background: #3d8b40;
 }
 
+#resetBtn {
+    background: #888;
+}
+
+#resetBtn:hover {
+    background: #666;
+}
+
+/* Favorites */
 .favorites {
     text-align: left;
-    margin-top: 10px;
+    margin-top: 16px;
 }
 
 .favorites h2 {
@@ -149,6 +194,45 @@ button:hover {
     padding: 0;
 }
 
+/* Affirmations */
+.affirmations {
+    text-align: left;
+    margin-top: 20px;
+}
+
+.affirmations h2 {
+    font-size: 1rem;
+    margin-bottom: 4px;
+}
+
+.affirmation-display-box {
+    margin-top: 8px;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    background: #fafafa;
+}
+
+.affirmation-text {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.affirmation-buttons {
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#getAffirmationBtn {
+    background: #ffb347;
+}
+
+#getAffirmationBtn:hover {
+    background: #f39c12;
+}
+
 /* Dark mode */
 body.dark {
     background: linear-gradient(135deg, #232526, #414345);
@@ -164,7 +248,8 @@ body.dark .meta {
     color: #bbb;
 }
 
-body.dark .favorites h2 {
+body.dark .favorites h2,
+body.dark .affirmations h2 {
     color: #f1f1f1;
 }
 
@@ -246,4 +331,12 @@ body.dark .modal .modal-content {
 body.dark .activated {
     background-color: #f1f1f1;
     color: #2c2c34;
+}
+body.dark .affirmation-display-box {
+    background: #1f1f26;
+    border-color: #444;
+}
+
+body.dark .affirmation-text {
+    color: #f1f1f1;
 }
