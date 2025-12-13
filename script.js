@@ -113,11 +113,19 @@ const affirmationPool = [
 // ====================
 // DOM ELEMENTS
 // ====================
+//============
+//DISPLAY ELEMENTS
+//constant for quote display element
 const quoteEl = document.getElementById("quote");
+//constat for quote author element
 const quoteAuthorEl = document.getElementById("quoteAuthor");
+//constant for quote category element.
 const quoteCategoryEl = document.getElementById("quoteCategory");
+//tracker for number of quotes seen out of total.
 const metaEl = document.getElementById("quoteMeta");
 
+// ======================
+//button elements
 const newQuoteBtn = document.getElementById("newQuoteBtn");
 const favoriteBtn = document.getElementById("favoriteBtn");
 const favoritesListEl = document.getElementById("favoritesList");
@@ -174,6 +182,7 @@ function toggleTheme() {
 // ====================
 function todayKey() {
     const d = new Date();
+    console.log(d.toISOString().slice(0, 10));
     return d.toISOString().slice(0, 10);
 }
 
