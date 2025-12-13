@@ -1,3 +1,7 @@
+[https://img.youtube.com/vi/UMGbpZXtrR0/0.jpg)]
+(https://www.youtube.com/watch?v=UMGbpZXtrR0
+](https://youtu.be/OtOMiqgP8C8)
+
 # Stoic Motivation & Affirmations
 
 A web application that delivers daily stoic inspiration and positive affirmations. Users can view new quotes or affirmations, save favorites, share content, and reset the app state. This project is deployed using **GitHub Pages** and is accessible live at:  
