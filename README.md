@@ -1,6 +1,4 @@
-[https://img.youtube.com/vi/UMGbpZXtrR0/0.jpg)]
-(https://www.youtube.com/watch?v=UMGbpZXtrR0
-](https://youtu.be/OtOMiqgP8C8)
+https://img.youtube.com/vi/UMGbpZXtrR0/0.jpg)](https://www.youtube.com/watch?v=UMGbpZXtrR0)
 
 # Stoic Motivation & Affirmations
 
