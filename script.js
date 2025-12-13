@@ -213,16 +213,15 @@ function setQuoteByIndex(index) {
     lastQuoteIndex = index;
 
     quoteEl.classList.add("fade-out");
-    quoteEl.classList.remove('animate');
+    
     setTimeout(() => {
         quoteEl.textContent = q.text;
         quoteAuthorEl.textContent = `— ${q.author}`;
         quoteCategoryEl.textContent = `Type: ${q.category}`;
         quoteEl.classList.remove("fade-out");
          //trigger reflow to restart animation
-        void quoteEl.offsetWidth;
-        //add animate to class to add the animation back to the text
-        quoteEl.classList.add('animate');
+        
+        
     }, 300);
 }
 
